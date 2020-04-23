@@ -1,3 +1,3 @@
 # Diplom
 
-My furst commit
+My first commit
