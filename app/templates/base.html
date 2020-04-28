@@ -1,0 +1,32 @@
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - DiplomDB</title>
+      {% else %}
+      <title>Добро пожаловать в DiplomDB</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>
+    Навигация:
+    {% if current_user.is_anonymous %}
+    <a href="{{ url_for('login') }}">Вход</a>
+    {% else %}
+    <a href="{{ url_for('index') }}">Главная</a>
+    <a href="{{ url_for('PersonalArea', username=current_user.username) }}">Личный кабинет</a>
+    <a href="{{ url_for('logout') }}">Выход</a>
+    {% endif %}
+        </div>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </body>
+</html>
