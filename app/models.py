@@ -15,12 +15,11 @@ class User(UserMixin, db.Model):
     Department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
     Phone = db.Column(db.String(12))
     access = db.Column(db.String)
-    Forms = db.relationship('Form', backref='author', lazy='dynamic')
 
-
+    form_all = db.relationship('Form_all', backref='author', lazy='dynamic')
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return '<FullName {}>'.format(self.FullName)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -28,34 +27,73 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-class Form(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+class Form_all(db.Model):
+    id = db.Column(db.Integer, primary_key=True, index=True, unique = True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     Faculty_id = db.Column(db.Integer)
-    Faculty = db.Column(db.String)
     Department_id = db.Column(db.Integer)
-    Department = db.Column(db.String)
-    Degree_id = db.Column(db.Integer)
-    Degree = db.Column(db.String)
     Year = db.Column(db.String)
-    Direction_id = db.Column(db.Integer)
-    Direction = db.Column(db.String)
-    Profile_id = db.Column(db.Integer)
-    Profile = db.Column(db.String)
+    Status = db.Column(db.String)
+
+    form_one = db.relationship('Form_one', backref='form_one', lazy='dynamic')
+    form_two = db.relationship('Form_two', backref='form_two', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Form_all {}>'.format(self.id)
+
+
+class Form_one(db.Model):
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    NumForm = db.Column(db.Integer, db.ForeignKey('form_all.id'), primary_key=True)
+    Group_id = db.Column(db.Integer, primary_key=True, index=True, unique = True)
+    Degree_id = db.Column(db.Integer)
+    Direction_id = db.Column(db.Integer, db.ForeignKey('direction.id'))
+    Direction_name = db.Column(db.String)
+    Profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'))
+    Profile_name = db.Column(db.String)
     Course = db.Column(db.Integer)
-    Group_id = db.Column(db.Integer)
     NumStudents = db.Column(db.Integer)
 
 
+    Direction = db.relationship('Direction', backref='form_one')
+    Profile = db.relationship('Profile', backref='form_one')
+
+
     def __repr__(self):
-        return '<Form {}>'.format(self.id)
+        return '<Form_one {}>'.format(self.Group_id)
+
+class Form_two(db.Model):
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+    NumForm = db.Column(db.Integer, db.ForeignKey('form_all.id'), primary_key=True)
+    Group_id = db.Column(db.Integer, db.ForeignKey('form_one.Group_id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, index=True, unique = True)
+
+    FullSubject = db.Column(db.String)
+    ВriefSubject = db.Column(db.String)
+
+    LecturerName = db.Column(db.String)
+    LecturerDepartment = db.Column(db.String)
+
+    PracticianName = db.Column(db.String)
+    PracticianDepartment = db.Column(db.String)
+
+    course_work = db.Column(db.String)
+    practice_work = db.Column(db.String)
+    laboratory_work = db.Column(db.String)
+
+    Group = db.relationship('Form_one', backref='form_two')
+
+    def __repr__(self):
+        return '<Form_two {}>'.format(self.id)
+
 
 class Faculty(db.Model): #ФАКУЛЬТЕТ
     id = db.Column(db.Integer, primary_key=True)
     abbreviation = db.Column(db.String)
     name = db.Column(db.String)
-    Department = db.relationship('Department', backref='department', lazy='dynamic')
+    Department = db.relationship('Department', backref='faculty', lazy='dynamic')
 
     def __repr__(self):
         return '<Faculty {}>'.format(self.name)
@@ -70,33 +108,48 @@ class Department(db.Model): # КАФЕДРА
     def __repr__(self):
         return '<Department {}>'.format(self.name)
 
-'''class Direction(db.Model): #НАПРАВЛЕНИЕ
-    Department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
-    Degree_id = db.Column(db.Integer, db.ForeignKey('degree.id'))
-    id = db.Column(db.Integer, primary_key=True)
-    abbreviation = db.Column(db.String)
-    name = db.Column(db.String)
-    profile = db.relationship('Profile', backref='profile', lazy='dynamic')
-
-    def __repr__(self):
-        return '<Direction {}>'.format(self.name)
-
-class Degree(db.Model): #КЛАССИФМКАЦИЯ: БАКАЛАВРЫ МАГИСТРЫ и ТД
+class Degree(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    direction = db.relationship('Direction', backref='direction', lazy='dynamic')
+
 
     def __repr__(self):
         return '<Degree {}>'.format(self.name)
 
-class Profile(db.Model):
-    Department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
-    Direction_id = db.Column(db.Integer, db.ForeignKey('direction.id'))
+class Direction(db.Model):
+    Faculty_id = db.Column(db.Integer, db.ForeignKey('faculty.id'))
+    Degree_id = db.Column(db.Integer, db.ForeignKey('degree.id'))
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
+    Degree = db.relationship('Degree', backref='direction')
+    Faculty = db.relationship('Faculty', backref='direction')
+
     def __repr__(self):
-        return '<Profile {}>'.format(self.name)'''
+        return '<Direction {}>'.format(self.name)
+
+class Profile(db.Model):
+    Direction_id = db.Column(db.Integer, db.ForeignKey('direction.id'))
+    Department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+
+    Direction = db.relationship('Direction', backref='profile')
+    Department = db.relationship('Department', backref='profile')
+
+    def __repr__(self):
+        return '<Profile {}>'.format(self.name)
+
+class groupStud(db.Model):
+    Profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'))
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+
+    Profile = db.relationship('Profile', backref='groupStud')
+
+    def __repr__(self):
+        return '<groupStud {}>'.format(self.id)
+
 
 @login.user_loader
 def load_user(id):

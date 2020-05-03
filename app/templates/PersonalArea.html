@@ -9,4 +9,7 @@
     <p><b>Уровень доступа:</b> {{ user.access }}</p>
     <p><b>Факультет:</b> {{ FacultyN.name }} ({{ FacultyN.abbreviation }})</p>
     <p><b>Кафедра:</b> {{ DepartmentN.name }} ({{ DepartmentN.abbreviation }})</p>
+    {% if user == current_user %}
+    <p><a href="{{ url_for('edit_profile') }}">Редактировать профиль</a></p>
+    {% endif %}
 {% endblock %}

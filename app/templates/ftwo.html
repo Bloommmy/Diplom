@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Форма 1. Заявка номер {{ numForm }}</h1>
+    {% if items != 0 %}
+    <table border="1" cellpadding="0" cellspacing="0">
+      <tr>
+        <th colspan="2">Направление подготовки</th>
+        <th colspan="2">Профиль</th>
+        <th rowspan="2">Степень</th>
+        <th rowspan="2">Курс</th>
+        <th rowspan="2">Номер группы</th>
+        <th rowspan="2">Число учащихся</th>
+      </tr>
+      <tr>
+        <th>Код направления</th>
+        <th>Название направления</th>
+        <th>Код профиля</th>
+        <th>Название профиля</th>
+      </tr>
+      {% for item in items %}
+      <tr>
+        <td>{{ item.Direction_id }}</td>
+        <td>{{ item.Direction_name }}</td>
+        <td>{{ item.Profile_id }}</td>
+        <td>{{ item.Profile_name }}</td>
+        {% if item.Degree_id == 1 %}
+        <td> Бакалавриат </td>
+        {% elif item.Degree_id == 2 %}
+        <td> Магистратура </td>
+        {% endif %}
+        <td>{{ item.Course }}</td>
+        <td>{{ item.Group_id }}</td>
+        <td>{{ item.NumStudents }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.Degree_id.label }}<br>
+            {{ form.Degree_id }}<br>
+            {% for error in form.Degree_id.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.Course.label }}<br>
+            {{ form.Course }}<br>
+            {% for error in form.Course.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.Direction_id.label }}<br>
+            {{ form.Direction_id(size=32) }}<br>
+            {% for error in form.Direction_id.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.Direction_name.label }}<br>
+            {{ form.Direction_name(size=32) }}<br>
+            {% for error in form.Direction_id.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.Profile_id.label }}<br>
+            {{ form.Profile_id(size=32) }}<br>
+            {% for error in form.Profile_id.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.Profile_name.label }}<br>
+            {{ form.Profile_name(size=32) }}<br>
+            {% for error in form.Profile_id.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.Group_id.label }}<br>
+            {{ form.Group_id(size=32) }}<br>
+            {% for error in form.Group_id.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.NumStudents.label }}<br>
+            {{ form.NumStudents(size=32) }}<br>
+            {% for error in form.NumStudents.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>{{ form.AddGroup() }}</p>
+        <p>{{ form.SetUpForm() }}</p>
+    </form>
+
+{% endblock %}

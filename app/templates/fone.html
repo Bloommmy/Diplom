@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Формирование заявки</h1>
+
+    <p><b>Номер заявки</b> {{ num }} </p>
+
+    <p><b>Факультет</b> {{ FacultyU.abbreviation }}</p>
+
+    <p><b>Кафедра</b> {{ DepartmentU.abbreviation }}</p>
+
+    <p><b>Год</b> {{ Year }} </p>
+
+    <p><b>Автор</b> {{ user.FullName }} </p>
+    <form action="" method="post" novalidate>
+      {{ form.hidden_tag() }}
+      <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Формирование заявки</h1>
+
+    <p><b>Форма 1 ({{ deg.name }})</b></p>
+    <p>
+      <b>Факультет</b> {{ FacultyU.abbreviation }}
+      <b>Кафедра</b> {{ DepartmentU.abbreviation }}
+      <b>Год</b> {{ Year }}
+    </p>
+    <p>{{ Course }} курс</p>
+
+    <table border="1" cellpadding="0" cellspacing="0">
+      <tr>
+        <th colspan="2">Направление подготовки</th>
+        <th colspan="2">Профиль</th>
+        <th rowspan="2">Номер группы</th>
+        <th rowspan="2">Число учащихся</th>
+      </tr>
+      <tr>
+        <th>Код направления</th>
+        <th>Название направления</th>
+        <th>Код профиля</th>
+        <th>Название профиля</th>
+      </tr>
+      <tr>
+        <th colspan="6">{{ Course }} курс</th>
+      </tr>
+    </table>
+
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.Direction_id.label }}<br>
+            {{ form.Direction_id }}<br>
+            {% for error in form.Direction_id.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.Profile_id.label }}<br>
+            {{ form.Profile_id }}<br>
+            {% for error in form.Profile_id.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.Group_id.label }}<br>
+            {{ form.Group_id }}<br>
+            {% for error in form.Group_id.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.NumStudents.label }}<br>
+            {{ form.NumStudents(size=32) }}<br>
+            {% for error in form.NumStudents.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit1() }}</p>
+        <p>{{ form.submit2() }}</p>
+        <p>{{ form.submit3() }}</p>
+        <p>{{ form.submit4() }}</p>
+    </form>
+{% endblock %}
