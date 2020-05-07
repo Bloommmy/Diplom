@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>Заявка №{{ numForm }}. Форма 1</h1>
+    <p>Проверте правильность данных в форме 1</p>
+    <br>
+    {% if items != 0 %}
+    {% if items1 != 0 %}
+    <table class="table table-bordered table-hover text-center">
+      <caption>Для бакалавров</caption>
+      <thead class="thead-light">
+      <tr>
+        <th colspan="2">Направление подготовки</th>
+        <th colspan="2">Профиль</th>
+        <th rowspan="2">Номер группы</th>
+        <th rowspan="2">Число учащихся</th>
+      </tr>
+      <tr>
+        <th>Код направления</th>
+        <th>Название направления</th>
+        <th>Код профиля</th>
+        <th>Название профиля</th>
+      </tr>
+      </thead>
+      {% if items1_1 != 0 %}
+      <thead class="thead-light">
+      <tr>
+        <th colspan="6">I курс</th>
+      </tr>
+      </thead>
+      {% for item in items1_1 %}
+      <tr>
+        <td>{{ item.Direction_id }}</td>
+        <td>{{ item.Direction_name }}</td>
+        <td>{{ item.Profile_id }}</td>
+        <td>{{ item.Profile_name }}</td>
+        <td>{{ item.Group_id }}</td>
+        <td>{{ item.NumStudents }}</td>
+        <td><a href="{{ url_for('form1_edit', username=current_user.username, numForm=numForm, group=item.Group_id, i=1) }}">Изменить</a><br>
+        <a href="{{ url_for('form_delet', username=current_user.username, numForm=numForm, i=3, g=item.Group_id) }}">Удалить</a></td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+      {% if items1_2 != 0 %}
+      <thead class="thead-light">
+      <tr>
+        <th colspan="6">II курс</th>
+      </tr>
+      </thead>
+      {% for item in items1_2 %}
+      <tr>
+        <td>{{ item.Direction_id }}</td>
+        <td>{{ item.Direction_name }}</td>
+        <td>{{ item.Profile_id }}</td>
+        <td>{{ item.Profile_name }}</td>
+        <td>{{ item.Group_id }}</td>
+        <td>{{ item.NumStudents }}</td>
+        <td><a href="{{ url_for('form1_edit', username=current_user.username, numForm=numForm, group=item.Group_id, i=1) }}">Изменить</a><br>
+        <a href="{{ url_for('form_delet', username=current_user.username, numForm=numForm, i=3, g=item.Group_id) }}">Удалить</a></td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+      {% if items1_3 != 0 %}
+      <thead class="thead-light">
+      <tr>
+        <th colspan="6">III курс</th>
+      </tr>
+      </thead>
+      {% for item in items1_3 %}
+      <tr>
+        <td>{{ item.Direction_id }}</td>
+        <td>{{ item.Direction_name }}</td>
+        <td>{{ item.Profile_id }}</td>
+        <td>{{ item.Profile_name }}</td>
+        <td>{{ item.Group_id }}</td>
+        <td>{{ item.NumStudents }}</td>
+        <td><a href="{{ url_for('form1_edit', username=current_user.username, numForm=numForm, group=item.Group_id, i=1) }}">Изменить</a><br>
+        <a href="{{ url_for('form_delet', username=current_user.username, numForm=numForm, i=3, g=item.Group_id) }}">Удалить</a></td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+      {% if items1_4 != 0 %}
+      <thead class="thead-light">
+      <tr>
+        <th colspan="6">IV курс</th>
+      </tr>
+      </thead>
+      {% for item in items1_4 %}
+      <tr>
+        <td>{{ item.Direction_id }}</td>
+        <td>{{ item.Direction_name }}</td>
+        <td>{{ item.Profile_id }}</td>
+        <td>{{ item.Profile_name }}</td>
+        <td>{{ item.Group_id }}</td>
+        <td>{{ item.NumStudents }}</td>
+        <td><a href="{{ url_for('form1_edit', username=current_user.username, numForm=numForm, group=item.Group_id, i=1) }}">Изменить</a><br>
+        <a href="{{ url_for('form_delet', username=current_user.username, numForm=numForm, i=3, g=item.Group_id) }}">Удалить</a></td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+    </table>
+    {% endif %}
+    {% if items2 != 0 %}
+    <table class="table table-bordered table-hover text-center">
+      <caption>Для магистров</caption>
+      <thead class="thead-light">
+      <tr>
+        <th colspan="2">Направление подготовки</th>
+        <th colspan="2">Профиль</th>
+        <th rowspan="2">Номер группы</th>
+        <th rowspan="2">Число учащихся</th>
+      </tr>
+      <tr>
+        <th>Код направления</th>
+        <th>Название направления</th>
+        <th>Код профиля</th>
+        <th>Название профиля</th>
+      </tr>
+      </thead>
+      {% if items2_1 != 0 %}
+      <thead class="thead-light">
+      <tr>
+        <th colspan="6">I курс</th>
+      </tr>
+      </thead>
+      {% for item in items2_1 %}
+      <tr>
+        <td>{{ item.Direction_id }}</td>
+        <td>{{ item.Direction_name }}</td>
+        <td>{{ item.Profile_id }}</td>
+        <td>{{ item.Profile_name }}</td>
+        <td>{{ item.Group_id }}</td>
+        <td>{{ item.NumStudents }}</td>
+        <td><a href="{{ url_for('form1_edit', username=current_user.username, numForm=numForm, group=item.Group_id, i=1) }}">Изменить</a><br>
+        <a href="{{ url_for('form_delet', username=current_user.username, numForm=numForm, i=3, g=item.Group_id) }}">Удалить</a></td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+      {% if items2_2 != 0 %}
+      <thead class="thead-light">
+      <tr>
+        <th colspan="6">II курс</th>
+      </tr>
+      </thead>
+      {% for item in items2_2 %}
+      <tr>
+        <td>{{ item.Direction_id }}</td>
+        <td>{{ item.Direction_name }}</td>
+        <td>{{ item.Profile_id }}</td>
+        <td>{{ item.Profile_name }}</td>
+        <td>{{ item.Group_id }}</td>
+        <td>{{ item.NumStudents }}</td>
+        <td><a href="{{ url_for('form1_edit', username=current_user.username, numForm=numForm, group=item.Group_id, i=1) }}">Изменить</a><br>
+        <a href="{{ url_for('form_delet', username=current_user.username, numForm=numForm, i=3, g=item.Group_id) }}">Удалить</a></td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+    </table>
+    {% endif %}
+    {% endif %}
+    <p><a class="btn btn-primary" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=0, sub=0, p=0, i=1) }}" role="button">Перейти к следующей форме</a></p>
+    <br>
+{% endblock %}

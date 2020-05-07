@@ -1,32 +1,54 @@
-<html>
-    <head>
-      {% if title %}
-      <title>{{ title }} - DiplomDB</title>
-      {% else %}
-      <title>Добро пожаловать в DiplomDB</title>
-      {% endif %}
-    </head>
-    <body>
-        <div>
-    Навигация:
-    {% if current_user.is_anonymous %}
-    <a href="{{ url_for('login') }}">Вход</a>
-    {% else %}
-    <a href="{{ url_for('index') }}">Главная</a>
-    <a href="{{ url_for('PersonalArea', username=current_user.username) }}">Личный кабинет</a>
-    <a href="{{ url_for('logout') }}">Выход</a>
-    {% endif %}
-        </div>
-        <hr>
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+    {% if title %}{{ title }} - DiplomDB{% else %}Добро пожаловать в DiplomDB{% endif %}
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+      <div class="container">
+            <div class="navbar-header">
+              <a class="navbar-brand mb-0 h1" href="{{ url_for('index') }}">DiplomDB</a>
+
+              <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-expanded="false">
+                <span class="navbar-toggler-icon"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+            </div>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Главная</a></li>
+              </ul>
+              <ul class="navbar-nav">
+                {% if current_user.is_anonymous %}
+                <li><a class="nav-link" href="{{ url_for('login') }}">Вход</a></li>
+                {% else %}
+                <li><a class="nav-link" href="{{ url_for('PersonalArea', username=current_user.username) }}">Личный кабинет</a></li>
+                <li><a class="nav-link" href="{{ url_for('logout') }}">Выход</a></li>
+                {% endif %}
+              </ul>
+            </div>
+      </div>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+    <br>
+
+    <div class="container">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
-        <ul>
             {% for message in messages %}
-            <li>{{ message }}</li>
+            <div class="alert alert-info" role="alert">{{ message }}</div>
             {% endfor %}
-        </ul>
         {% endif %}
         {% endwith %}
-        {% block content %}{% endblock %}
-    </body>
-</html>
+        
+
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}

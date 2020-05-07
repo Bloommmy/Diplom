@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+{% block app_content %}
+    <h1>Заявка №{{ numForm }}. Форма 2</h1>
+
+
+
+    {% if items != 0 %}
+    <table class="table table-bordered table-hover text-center">
+      <thead class="thead-light">
+      <tr>
+        <th colspan="2">Название дисциплины</th>
+        <th colspan="2">Преподователи теоритической части</th>
+        <th colspan="5">Преподователи практической части</th>
+      </tr>
+      <tr>
+        <th rowspan="2">Полное</th>
+        <th rowspan="2">Краткое</th>
+        <th rowspan="2">ФИО</th>
+        <th rowspan="2">Кафедра</th>
+        <th rowspan="2">ФИО</th>
+        <th rowspan="2">Кафедра</th>
+        <th colspan="3">Вид занятий</th>
+      </tr>
+      <tr>
+        <th>Курсов.</th>
+        <th>Практ.</th>
+        <th>Лабор.</th>
+      </tr>
+      </thead>
+      {% for i in range(koll) %}
+      <thead class="thead-light">
+      <tr>
+        <th colspan="9">{{ all_g[i] }}</th>
+      </tr>
+      </thead>
+      {% for item in items.query.filter(items.NumForm == numForm, items.Group_id == all_g[i]).all() %}
+      <tr>
+        <td>{{ item.FullSubject }}</td>
+        <td>{{ item.BriefSubject }}</td>
+        <td>{{ item.LecturerName }}</td>
+        <td>{{ item.LecturerDepartment }}</td>
+
+        <td>{{ item.PracticianName }}</td>
+        <td>{{ item.PracticianDepartment }}</td>
+
+        {% if item.course_work == '1' %}
+        <td> Да </td>
+        {% elif item.course_work == '2' %}
+        <td> Нет </td>
+        {% endif %}
+
+        {% if item.practice_work == '1' %}
+        <td> Да </td>
+        {% elif item.practice_work == '2' %}
+        <td> Нет </td>
+        {% endif %}
+
+        {% if item.laboratory_work == '1' %}
+        <td> Да </td>
+        {% elif item.laboratory_work == '2' %}
+        <td> Нет </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+      {% endfor %}
+    </table>
+    {% endif %}
+    <div class="row">
+      {% for i in range(koll) %}
+        <div class="col-md-2">
+          {% if all_g[i] == g %}
+              {% if all_g_ok[i] == all_g[i] %}
+                  <a class="nav-link" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[i], sub=0, p=i, i=1) }}">
+                    <u><b>{{ all_g[i] }}</b></u>
+                  </a>
+              {% elif all_g_ok[i] != all_g[i] %}
+                  <a class="nav-link disabled" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[i], sub=0, p=i, i=1) }}">
+                    <u>{{ all_g[i] }}</u>
+                  </a>
+              {% endif %}
+          {% elif all_g[i] != g %}
+              {% if all_g_ok[i] == all_g[i] %}
+                  <a class="nav-link" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[i], sub=0, p=i, i=1) }}">
+                    <b>{{ all_g[i] }}</b>
+                  </a>
+              {% elif all_g_ok[i] != all_g[i] %}
+                  <a class="nav-link disabled" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[i], sub=0, p=i, i=1) }}">
+                    {{ all_g[i] }}
+                  </a>
+              {% endif %}
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    <p><b>Группа {{ g }}</b></p>
+        <form class="form form-horizontal" method="post" action="" role="form">
+          <div class="form-group">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_errors(form, hiddens="only") }}
+            <p><b>Название дисциплины</b></p>
+            <div class="row">
+              <div class="col-md-4">
+                {{ wtf.form_field(form.FullSubject) }}
+              </div>
+              <div class="col-md-4">
+                {{ wtf.form_field(form.BriefSubject) }}
+              </div>
+            </div>
+            <p><b>Преподаватель теоретической части</b></p>
+            <div class="row">
+              <div class="col-md-4">
+                {{ wtf.form_field(form.LecturerName) }}
+              </div>
+              <div class="col-md-4">
+                {{ wtf.form_field(form.LecturerDepartment) }}
+              </div>
+            </div>
+            <p><b>Преподаватель практической части</b></p>
+            <div class="row">
+              <div class="col-md-4">
+                {{ wtf.form_field(form.PracticianName) }}
+              </div>
+              <div class="col-md-4">
+                {{ wtf.form_field(form.PracticianDepartment) }}
+              </div>
+            </div>
+
+            <p>Вид занятия</p>
+            <div class="row">
+              <div class="col-md-2">
+                {{ wtf.form_field(form.course_work) }}
+              </div>
+              <div class="col-md-2">
+                {{ wtf.form_field(form.practice_work) }}
+              </div>
+              <div class="col-md-2">
+                {{ wtf.form_field(form.laboratory_work) }}
+              </div>
+            </div>
+
+            {{ wtf.form_field(form.AddSub) }}
+          </div>
+        </form>
+
+  <a class="btn btn-primary" href="{{ url_for('form12_promo', username = current_user.username, numForm = numForm) }}" role="button">Отправить форму</a></p>
+
+{% endblock %}

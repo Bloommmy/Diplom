@@ -1,15 +1,14 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block app_content %}
     {% if current_user.is_anonymous %}
     <h1>Пожальуйста зайдите в систему для дальнейшей работы</h1>
     {% else %}
     <h1>Здравствуйте, {{ current_user.FullName }}!</h1>
     {% if current_user.access == 'admin' %}
+    <br>
     <p><a href="{{ url_for('register') }}">Добавить нового пользователя</a></p>
-    <p><a href="{{ url_for('fone', username=current_user.username) }}">Подать заявку</a></p>
-    {% else %}
-    <p>Подать заявку</p>
+    <p><a href="{{ url_for('form0', username=current_user.username, i=1) }}">Подать заявку</a></p>
     {% endif %}
     {% endif %}
 {% endblock %}

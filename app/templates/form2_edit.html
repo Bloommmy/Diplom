@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Форма 2. Заявка номер {{ numForm }}. Группа {{ group }}. Предмет номер {{ sub }}.</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p><b>Название дисциплины</b></p>
+        <p>
+            {{ form.FullSubject.label }}<br>
+            {{ form.FullSubject }}<br>
+            {% for error in form.FullSubject.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.BriefSubject.label }}<br>
+            {{ form.BriefSubject }}<br>
+            {% for error in form.BriefSubject.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p><b>Преподаватель теориической части</b></p>
+        <p>
+            {{ form.LecturerName.label }}<br>
+            {{ form.LecturerName(size=32) }}<br>
+            {% for error in form.LecturerName.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.LecturerDepartment.label }}<br>
+            {{ form.LecturerDepartment(size=32) }}<br>
+            {% for error in form.LecturerDepartment.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p><b>Преподаватель практической части</b></p>
+        <p>
+            {{ form.PracticianName.label }}<br>
+            {{ form.PracticianName(size=32) }}<br>
+            {% for error in form.PracticianName.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.PracticianDepartment.label }}<br>
+            {{ form.PracticianDepartment(size=32) }}<br>
+            {% for error in form.PracticianDepartment.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>Виды занятий</p>
+        <p>
+            {{ form.course_work.label }}<br>
+            {{ form.course_work }}<br>
+            {% for error in form.course_work.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            {{ form.practice_work.label }}<br>
+            {{ form.practice_work }}<br>
+            {% for error in form.practice_work.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            {{ form.laboratory_work.label }}<br>
+            {{ form.laboratory_work }}<br>
+            {% for error in form.laboratory_work.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>{{ form.Save() }}</p>
+    </form>
+
+{% endblock %}

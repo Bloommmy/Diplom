@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>Редактирование заявка номер {{ numForm }}</h1>
+
+    <table border="0" cellpadding="0" cellspacing="0" width="60%">
+      <td><b>Факультет</b> <u>{{ f0.Faculty }}</u></td>
+      <td><b>Кафедра</b> <u>{{ f0.Department }}</u></td>
+      <td><b>Год</b> <u>{{ f0.Year }}</u></td>
+    </table>
+    <p><b>Форма 1.</b></p>
+    {% if f1 != 0 %}
+    {% if items1 != 0 %}
+    <p>Для бакалавров</p>
+    <table class="table table-bordered table-hover text-center">
+      <tr>
+        <th colspan="2">Направление подготовки</th>
+        <th colspan="2">Профиль</th>
+        <th rowspan="2">Номер группы</th>
+        <th rowspan="2">Число учащихся</th>
+      </tr>
+      <tr>
+        <th>Код направления</th>
+        <th>Название направления</th>
+        <th>Код профиля</th>
+        <th>Название профиля</th>
+      </tr>
+      {% if items1_1 != 0 %}
+      <tr>
+        <th colspan="6">I курс</th>
+      </tr>
+      {% for item in items1_1 %}
+      <tr>
+        <td>{{ item.Direction_id }}</td>
+        <td>{{ item.Direction_name }}</td>
+        <td>{{ item.Profile_id }}</td>
+        <td>{{ item.Profile_name }}</td>
+        <td>{{ item.Group_id }}</td>
+        <td>{{ item.NumStudents }}</td>
+        <td><a href="{{ url_for('form1_edit', username=current_user.username, numForm=numForm, group=item.Group_id, i=3) }}">Изменить</a></td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+      {% if items1_2 != 0 %}
+      <tr>
+        <th colspan="6">II курс</th>
+      </tr>
+      {% for item in items1_2 %}
+      <tr>
+        <td>{{ item.Direction_id }}</td>
+        <td>{{ item.Direction_name }}</td>
+        <td>{{ item.Profile_id }}</td>
+        <td>{{ item.Profile_name }}</td>
+        <td>{{ item.Group_id }}</td>
+        <td>{{ item.NumStudents }}</td>
+        <td><a href="{{ url_for('form1_edit', username=current_user.username, numForm=numForm, group=item.Group_id, i=3) }}">Изменить</a></td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+      {% if items1_3 != 0 %}
+      <tr>
+        <th colspan="6">III курс</th>
+      </tr>
+      {% for item in items1_3 %}
+      <tr>
+        <td>{{ item.Direction_id }}</td>
+        <td>{{ item.Direction_name }}</td>
+        <td>{{ item.Profile_id }}</td>
+        <td>{{ item.Profile_name }}</td>
+        <td>{{ item.Group_id }}</td>
+        <td>{{ item.NumStudents }}</td>
+        <td><a href="{{ url_for('form1_edit', username=current_user.username, numForm=numForm, group=item.Group_id, i=3) }}">Изменить</a></td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+      {% if items1_4 != 0 %}
+      <tr>
+        <th colspan="6">IV курс</th>
+      </tr>
+      {% for item in items1_4 %}
+      <tr>
+        <td>{{ item.Direction_id }}</td>
+        <td>{{ item.Direction_name }}</td>
+        <td>{{ item.Profile_id }}</td>
+        <td>{{ item.Profile_name }}</td>
+        <td>{{ item.Group_id }}</td>
+        <td>{{ item.NumStudents }}</td>
+        <td><a href="{{ url_for('form1_edit', username=current_user.username, numForm=numForm, group=item.Group_id, i=3) }}">Изменить</a></td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+      {% endif %}
+    </table>
+
+
+    {% if items2 != 0 %}
+    <p>Для магистров</p>
+    <table class="table table-bordered table-hover text-center">
+      <tr>
+        <th colspan="2">Направление подготовки</th>
+        <th colspan="2">Профиль</th>
+        <th rowspan="2">Номер группы</th>
+        <th rowspan="2">Число учащихся</th>
+      </tr>
+      <tr>
+        <th>Код направления</th>
+        <th>Название направления</th>
+        <th>Код профиля</th>
+        <th>Название профиля</th>
+      </tr>
+      {% if items2_1 != 0 %}
+      <tr>
+        <th colspan="6">I курс</th>
+      </tr>
+      {% for item in items2_1 %}
+      <tr>
+        <td>{{ item.Direction_id }}</td>
+        <td>{{ item.Direction_name }}</td>
+        <td>{{ item.Profile_id }}</td>
+        <td>{{ item.Profile_name }}</td>
+        <td>{{ item.Group_id }}</td>
+        <td>{{ item.NumStudents }}</td>
+        <td><a href="{{ url_for('form1_edit', username=current_user.username, numForm=numForm, group=item.Group_id, i=3) }}">Изменить</a></td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+      {% if items2_2 != 0 %}
+      <tr>
+        <th colspan="6">II курс</th>
+      </tr>
+      {% for item in items2_2 %}
+      <tr>
+        <td>{{ item.Direction_id }}</td>
+        <td>{{ item.Direction_name }}</td>
+        <td>{{ item.Profile_id }}</td>
+        <td>{{ item.Profile_name }}</td>
+        <td>{{ item.Group_id }}</td>
+        <td>{{ item.NumStudents }}</td>
+        <td><a href="{{ url_for('form1_edit', username=current_user.username, numForm=numForm, group=item.Group_id, i=3) }}">Изменить</a></td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+      {% endif %}
+    </table>
+    <p><b>Форма 2.</b></p>
+    {% if f2 != 0 %}
+    <table class="table table-bordered table-hover text-center">
+      <tr>
+        <th colspan="2">Название дисциплины</th>
+        <th colspan="2">Преподователи теоритической части</th>
+        <th colspan="5">Преподователи практической части</th>
+      </tr>
+      <tr>
+        <th rowspan="2">Полное</th>
+        <th rowspan="2">Краткое</th>
+        <th rowspan="2">ФИО</th>
+        <th rowspan="2">Кафедра</th>
+        <th rowspan="2">ФИО</th>
+        <th rowspan="2">Кафедра</th>
+        <th colspan="3">Вид занятий</th>
+      </tr>
+      <tr>
+        <th>Курсов.</th>
+        <th>Практ.</th>
+        <th>Лабор.</th>
+      </tr>
+      {% for i in range(koll) %}
+      <tr>
+        <th colspan="9">{{ G[i] }}</th>
+      </tr>
+      {% for item in items.query.filter(items.NumForm == numForm, items.Group_id == G[i]).all() %}
+      <tr>
+        <td>{{ item.FullSubject }}</td>
+        <td>{{ item.BriefSubject }}</td>
+        <td>{{ item.LecturerName }}</td>
+        <td>{{ item.LecturerDepartment }}</td>
+
+        <td>{{ item.PracticianName }}</td>
+        <td>{{ item.PracticianDepartment }}</td>
+
+        {% if item.course_work == '1' %}
+        <td> Да </td>
+        {% elif item.course_work == '2' %}
+        <td> Нет </td>
+        {% endif %}
+
+        {% if item.practice_work == '1' %}
+        <td> Да </td>
+        {% elif item.practice_work == '2' %}
+        <td> Нет </td>
+        {% endif %}
+
+        {% if item.laboratory_work == '1' %}
+        <td> Да </td>
+        {% elif item.laboratory_work == '2' %}
+        <td> Нет </td>
+        {% endif %}
+        <td><a href="{{ url_for('form2_edit', username=current_user.username, numForm=numForm, group=item.Group_id, sub=item.id, i=2) }}">Изменить</a></td>
+      </tr>
+      {% endfor %}
+      {% endfor %}
+
+    </table>
+    {% else %}
+    <p>Данная форма не заполнена.</p>
+    {% endif %}
+    {% else %}
+    <p>Данная форма не заполнена.</p>
+    {% endif %}
+{% endblock %}
