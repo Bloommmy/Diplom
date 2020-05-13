@@ -1,14 +1,87 @@
 {% extends "base.html" %}
 
+{% block app_content_two %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    {% if current_user.is_anonymous %}
+        <h1 class="display-4">Страница не&nbsp;доступна</h1>
+        <p class="lead">
+          Пожалуйста авторизуйтесь для дальнейшей работы
+        </p>
+    {% else%}
+
+    <h1 class="display-4">Здравствуйте, {{ current_user.FullName }}!</h1>
+    <p class="lead">
+      Добро пожаловать на&nbsp;Главную страницу веб-приложения &laquo;DiplomDB&raquo;.
+      Разработка предназначается для&nbsp;Центра&nbsp;Маркетинга&nbsp;СПбГЭТУ&nbsp;&laquo;ЛЭТИ&raquo; с&nbsp;целью автоматизации процесса сбора первичной информации для оценки качества учебного процесса путем опроса студентов.
+    </p>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}
+
 {% block app_content %}
     {% if current_user.is_anonymous %}
-    <h1>Пожальуйста зайдите в систему для дальнейшей работы</h1>
+    <div class="row">
+      <div class="col-sm text-center">
+        <p>Функции не доступны!</p>
+      </div>
+
+    </div>
+
     {% else %}
-    <h1>Здравствуйте, {{ current_user.FullName }}!</h1>
+
     {% if current_user.access == 'admin' %}
-    <br>
-    <p><a href="{{ url_for('register') }}">Добавить нового пользователя</a></p>
-    <p><a href="{{ url_for('form0', username=current_user.username, i=1) }}">Подать заявку</a></p>
+    <div class="row">
+      <div class="col-sm">
+
+
+            <h5>Регистрация новых пользователей</h5>
+            <p>Добавляйте новых пользователей в&nbsp;базу, настраивайте права доступа и&nbsp;генерируйте логины и&nbsp;пароли для авторизации. Функция доступна только пользователям с&nbsp;правом доступа &laquo;Администратор&raquo;.</p>
+
+
+
+      </div>
+      <div class="col-sm">
+
+            <h5>Оформление заявки</h5>
+            <p>С&nbsp;помощью дружественных и&nbsp;интуитивно понятных веб-форм заполняйте первичную информацию об&nbsp;учебных группах, дисциплинах, преподавателях и&nbsp;отправляйте на&nbsp;обработку прямиком в&nbsp;Центр&nbsp;Маркетинга&nbsp;СПбГЭТУ&nbsp;&laquo;ЛЭТИ&raquo;.</p>
+
+
+      </div>
+
+
+      <div class="col-sm">
+
+            <h5>Работа с&nbsp;базой</h5>
+            <p>Система фильтрации и&nbsp;поиска поможет быстро и&nbsp;качественно обрабатывать первичную информацию о&nbsp;группах и&nbsp;искать нужные сведения о&nbsp;пользователях.</p>
+
+      </div>
+      <div class="w-100"></div>
+      <div class="col-sm ">
+        <a href="{{ url_for('register') }}" class="btn btn-dark stretched-link">Добавить пользователя</a>
+      </div>
+      <div class="col-sm ">
+        <a href="{{ url_for('form0', username=current_user.username, i=1) }}" class="btn btn-dark stretched-link">Заполнить заявку</a>
+      </div>
+      <div class="col-sm">
+        <div class="btn-group" role="group">
+          <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Просмотр базы
+          </button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <a class="dropdown-item" href="{{ url_for('all_form_view', username=current_user.username, i=1) }}">База заявок</a>
+            <a class="dropdown-item" href="#">База пользователей</a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+<br>
+
+
     {% endif %}
     {% endif %}
 {% endblock %}

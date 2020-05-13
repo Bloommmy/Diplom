@@ -5,139 +5,202 @@
 {% block app_content %}
     <h1>Заявка №{{ numForm }}. Форма 1</h1>
     <br>
-    {% if items != 0 %}
-    {% if items1 != 0 %}
-    <table class="table table-bordered table-hover text-center">
-      <caption>Для бакалавров</caption>
-      <thead class="thead-light">
-      <tr>
-        <th colspan="2">Направление подготовки</th>
-        <th colspan="2">Профиль</th>
-        <th rowspan="2">Номер группы</th>
-        <th rowspan="2">Число учащихся</th>
-      </tr>
-      <tr>
-        <th>Код направления</th>
-        <th>Название направления</th>
-        <th>Код профиля</th>
-        <th>Название профиля</th>
-      </tr>
-      </thead>
-      {% if items1_1 != 0 %}
-      <thead class="thead-light">
-      <tr>
-        <th colspan="6">I курс</th>
-      </tr>
-      </thead>
-      {% for item in items1_1 %}
-      <tr>
-        <td>{{ item.Direction_id }}</td>
-        <td>{{ item.Direction_name }}</td>
-        <td>{{ item.Profile_id }}</td>
-        <td>{{ item.Profile_name }}</td>
-        <td>{{ item.Group_id }}</td>
-        <td>{{ item.NumStudents }}</td>
-      </tr>
-      {% endfor %}
-      {% endif %}
-      {% if items1_2 != 0 %}
-      <thead class="thead-light">
-      <tr>
-        <th colspan="6">II курс</th>
-      </tr>
-      </thead>
-      {% for item in items1_2 %}
-      <tr>
-        <td>{{ item.Direction_id }}</td>
-        <td>{{ item.Direction_name }}</td>
-        <td>{{ item.Profile_id }}</td>
-        <td>{{ item.Profile_name }}</td>
-        <td>{{ item.Group_id }}</td>
-        <td>{{ item.NumStudents }}</td>
-      </tr>
-      {% endfor %}
-      {% endif %}
-      {% if items1_3 != 0 %}
-      <thead class="thead-light">
-      <tr>
-        <th colspan="6">III курс</th>
-      </tr>
-      </thead>
-      {% for item in items1_3 %}
-      <tr>
-        <td>{{ item.Direction_id }}</td>
-        <td>{{ item.Direction_name }}</td>
-        <td>{{ item.Profile_id }}</td>
-        <td>{{ item.Profile_name }}</td>
-        <td>{{ item.Group_id }}</td>
-        <td>{{ item.NumStudents }}</td>
-      </tr>
-      {% endfor %}
-      {% endif %}
-      {% if items1_4 != 0 %}
-      <thead class="thead-light">
-      <tr>
-        <th colspan="6">IV курс</th>
-      </tr>
-      </thead>
-      {% for item in items1_4 %}
-      <tr>
-        <td>{{ item.Direction_id }}</td>
-        <td>{{ item.Direction_name }}</td>
-        <td>{{ item.Profile_id }}</td>
-        <td>{{ item.Profile_name }}</td>
-        <td>{{ item.Group_id }}</td>
-        <td>{{ item.NumStudents }}</td>
-      </tr>
-      {% endfor %}
-      {% endif %}
-    </table>
-    {% endif %}
-    {% if items2 != 0 %}
-    <table class="table table-bordered table-hover text-center">
-      <caption>Для магистров</caption>
-      {% if items2_1 != 0 %}
-      <thead class="thead-light">
-      <tr>
-        <th colspan="6">I курс</th>
-      </tr>
-      </thead>
-      {% for item in items2_1 %}
-      <tr>
-        <td>{{ item.Direction_id }}</td>
-        <td>{{ item.Direction_name }}</td>
-        <td>{{ item.Profile_id }}</td>
-        <td>{{ item.Profile_name }}</td>
-        <td>{{ item.Group_id }}</td>
-        <td>{{ item.NumStudents }}</td>
-      </tr>
-      {% endfor %}
-      {% endif %}
-      {% if items2_2 != 0 %}
-      <thead class="thead-light">
-      <tr>
-        <th colspan="6">II курс</th>
-      </tr>
-      </thead>
-      {% for item in items2_2 %}
-      <tr>
-        <td>{{ item.Direction_id }}</td>
-        <td>{{ item.Direction_name }}</td>
-        <td>{{ item.Profile_id }}</td>
-        <td>{{ item.Profile_name }}</td>
-        <td>{{ item.Group_id }}</td>
-        <td>{{ item.NumStudents }}</td>
-      </tr>
-      {% endfor %}
-      {% endif %}
-    </table>
-    {% endif %}
-    {% endif %}
-    <div class="row">
-        <div class="col-md-4">
-            {{ wtf.quick_form(form) }}
+    <form class="form form-horizontal" method="post" action="" role="form">
+      <div class="form-group">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_errors(form, hiddens="only") }}
+        <div class="row">
+          <div class="col-sm">
+            {{ wtf.form_field(form.Degree_id) }}
+          </div>
+          <div class="col-sm">
+            <p>Номер курса</p>
+            <div class="custom-control custom-radio custom-control-inline">
+              {{ wtf.form_field(form.Course, form_type = "inline") }}
+            </div>
+          </div>
         </div>
+        <p><b>Направление подготовки</b></p>
+        <div class="row">
+          <div class="col-sm">
+            {{ wtf.form_field(form.Direction_id) }}
+          </div>
+          <div class="col-sm">
+            {{ wtf.form_field(form.Direction_name) }}
+          </div>
+        </div>
+        <p><b>Профиль</b></p>
+        <div class="row">
+          <div class="col-sm">
+            {{ wtf.form_field(form.Profile_id) }}
+          </div>
+          <div class="col-sm">
+            {{ wtf.form_field(form.Profile_name) }}
+          </div>
+        </div>
+        <p><b>Информация о группе</b></p>
+        <div class="row">
+          <div class="col-sm">
+            {{ wtf.form_field(form.Group_id) }}
+          </div>
+          <div class="col-sm">
+            {{ wtf.form_field(form.NumStudents) }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm text-left">
+            {{ wtf.form_field(form.AddGroup) }}
+            {% if items != 0 %}
+            {% if i == '1' %}
+              <a class="btn btn-primary" href="{{ url_for('form1_promo', username = current_user.username, numForm = numForm, i = 1) }}" role="button">Отправить форму</a>
+            {% elif i == '11'%}
+              <a class="btn btn-primary" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=g, sub=0, p=0, i = 1) }}" role="button">Перейти к добавлению дисциплин</a>
+            {% elif i == '21' %}
+              <a class="btn btn-primary" href="{{ url_for('form0_edit', username = current_user.username, numForm = numForm) }}" role="button">Сохранить форму</a>
+            {% elif i == '23'%}
+              <a class="btn btn-primary" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=0, sub=0, p=0, i = 22) }}" role="button">Перейти к добавлению дисциплин</a>
+            {% elif i == '22'%}
+              <a class="btn btn-primary" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=g, sub=0, p=0, i = 22) }}" role="button">Перейти к добавлению дисциплин</a>
+            {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="row">
+      <div class="col text-center">
+        <p><b>Предварительный результат заполнения формы</b></p>
+      </div>
     </div>
-    <br>
+    {% if items == 0 %}
+    <div class="row">
+      <div class="col text-center">
+        <p>В заявку еще не были добавленны группы</p>
+      </div>
+    </div>
+    {% elif items != 0 %}
+    <table class="table table-bordered table-hover text-center">
+
+      <thead class="thead-light">
+      <tr>
+        <th colspan="2" style="width: 35%">Направление подготовки</th>
+        <th colspan="2" style="width: 35%">Профиль</th>
+        <th rowspan="2" style="width: 10%">Номер <br> группы</th>
+        <th rowspan="2" style="width: 10%">Число <br> учащихся</th>
+      </tr>
+      <tr>
+        <th style="width: 10%">Код</th>
+        <th style="width: 25%">Название</th>
+        <th style="width: 10%">Код</th>
+        <th style="width: 25%">Название</th>
+      </tr>
+      </thead>
+      </table>
+      {% if items1 != 0 %}
+      <table class="table table-bordered table-hover text-center">
+        <caption class="text-center">Для бакалавров</caption>
+            {% for u in b %}
+                    {% if items.query.filter(items.NumForm == numForm, items.Degree_id == 1, items.Course == u).count() != 0 %}
+                    <thead class="thead-light">
+                    <tr>
+                      <th colspan="6">
+                        {% if u == 1 %}
+                          I курс
+                        {% elif u == 2 %}
+                          II курс
+                        {% elif u == 3 %}
+                          III курс
+                        {% elif u == 4 %}
+                          IV курс
+                        {% endif %}
+                      </th>
+                    </tr>
+
+                    </thead>
+                    {% endif %}
+                    {% for item in items.query.filter(items.NumForm == numForm, items.Degree_id == 1, items.Course == u).all() %}
+                    <tr>
+                      <td style="width: 10%">{{ item.Direction_id }}</td>
+                      <td style="width: 25%">{{ item.Direction_name }}</td>
+                      <td style="width: 10%">{{ item.Profile_id }}</td>
+                      <td style="width: 25%">{{ item.Profile_name }}</td>
+                      <td style="width: 10%">{{ item.Group_id }}</td>
+                      <td style="width: 10%">{{ item.NumStudents }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+          </table>
+      {% endif %}
+      {% if items2 != 0 %}
+      <table class="table table-bordered table-hover text-center">
+        <caption class="text-center">Для магистров</caption>
+        {% for u in m %}
+            {% if items.query.filter(items.NumForm == numForm, items.Degree_id == 2, items.Course == u).count() != 0 %}
+              <thead class="thead-light">
+              <tr>
+                <th colspan="6">
+                  {% if u == 1 %}
+                    I курс
+                  {% elif u == 2 %}
+                    II курс
+                  {% endif %}
+                </th>
+              </tr>
+              </thead>
+              {% endif %}
+              {% for item in items.query.filter(items.NumForm == numForm, items.Degree_id == 2, items.Course == u).all() %}
+              <tr>
+                <td style="width: 10%">{{ item.Direction_id }}</td>
+                <td style="width: 25%">{{ item.Direction_name }}</td>
+                <td style="width: 10%">{{ item.Profile_id }}</td>
+                <td style="width: 25%">{{ item.Profile_name }}</td>
+                <td style="width: 10%">{{ item.Group_id }}</td>
+                <td style="width: 10%">{{ item.NumStudents }}</td>
+              </tr>
+          {% endfor %}
+        {% endfor %}
+      </table>
+      {% endif %}
+
+      {% if items3 != 0 %}
+      <table class="table table-bordered table-hover text-center">
+        <caption class="text-center">Для специалистов</caption>
+        {% for u in c %}
+            {% if items.query.filter(items.NumForm == numForm, items.Degree_id == 3, items.Course == u).count() != 0 %}
+            <thead class="thead-light">
+            <tr>
+              <th colspan="6">
+                {% if u == 1 %}
+                  I курс
+                {% elif u == 2 %}
+                  II курс
+                {% elif u == 3 %}
+                  III курс
+                {% elif u == 4 %}
+                  IV курс
+                {% elif u == 5 %}
+                  V курс
+                {% endif %}
+              </th>
+            </tr>
+            </thead>
+            {% endif %}
+            {% for item in items.query.filter(items.NumForm == numForm, items.Degree_id == 3, items.Course == u).all() %}
+            <tr>
+              <td style="width: 10%">{{ item.Direction_id }}</td>
+              <td style="width: 25%">{{ item.Direction_name }}</td>
+              <td style="width: 10%">{{ item.Profile_id }}</td>
+              <td style="width: 25%">{{ item.Profile_name }}</td>
+              <td style="width: 10%">{{ item.Group_id }}</td>
+              <td style="width: 10%">{{ item.NumStudents }}</td>
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </table>
+      {% endif %}
+    {% endif %}
+
+
     <br>
 {% endblock %}

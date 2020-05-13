@@ -3,148 +3,233 @@
 
 
 {% block app_content %}
-    <h1>Заявка №{{ numForm }}. Форма 2</h1>
-
-
-
-    {% if items != 0 %}
-    <table class="table table-bordered table-hover text-center">
-      <thead class="thead-light">
-      <tr>
-        <th colspan="2">Название дисциплины</th>
-        <th colspan="2">Преподователи теоритической части</th>
-        <th colspan="5">Преподователи практической части</th>
-      </tr>
-      <tr>
-        <th rowspan="2">Полное</th>
-        <th rowspan="2">Краткое</th>
-        <th rowspan="2">ФИО</th>
-        <th rowspan="2">Кафедра</th>
-        <th rowspan="2">ФИО</th>
-        <th rowspan="2">Кафедра</th>
-        <th colspan="3">Вид занятий</th>
-      </tr>
-      <tr>
-        <th>Курсов.</th>
-        <th>Практ.</th>
-        <th>Лабор.</th>
-      </tr>
-      </thead>
-      {% for i in range(koll) %}
-      <thead class="thead-light">
-      <tr>
-        <th colspan="9">{{ all_g[i] }}</th>
-      </tr>
-      </thead>
-      {% for item in items.query.filter(items.NumForm == numForm, items.Group_id == all_g[i]).all() %}
-      <tr>
-        <td>{{ item.FullSubject }}</td>
-        <td>{{ item.BriefSubject }}</td>
-        <td>{{ item.LecturerName }}</td>
-        <td>{{ item.LecturerDepartment }}</td>
-
-        <td>{{ item.PracticianName }}</td>
-        <td>{{ item.PracticianDepartment }}</td>
-
-        {% if item.course_work == '1' %}
-        <td> Да </td>
-        {% elif item.course_work == '2' %}
-        <td> Нет </td>
-        {% endif %}
-
-        {% if item.practice_work == '1' %}
-        <td> Да </td>
-        {% elif item.practice_work == '2' %}
-        <td> Нет </td>
-        {% endif %}
-
-        {% if item.laboratory_work == '1' %}
-        <td> Да </td>
-        {% elif item.laboratory_work == '2' %}
-        <td> Нет </td>
-        {% endif %}
-      </tr>
-      {% endfor %}
-      {% endfor %}
-    </table>
-    {% endif %}
     <div class="row">
-      {% for i in range(koll) %}
-        <div class="col-md-2">
-          {% if all_g[i] == g %}
-              {% if all_g_ok[i] == all_g[i] %}
-                  <a class="nav-link" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[i], sub=0, p=i, i=1) }}">
-                    <u><b>{{ all_g[i] }}</b></u>
-                  </a>
-              {% elif all_g_ok[i] != all_g[i] %}
-                  <a class="nav-link disabled" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[i], sub=0, p=i, i=1) }}">
-                    <u>{{ all_g[i] }}</u>
-                  </a>
+      <div class="col-8">
+        <h1>Заявка №{{ numForm }}. Форма 2. Группа {{ g }}</h1>
+      </div>
+      <div class="col-4 text-right">
+        {% if koll > 6 %}
+        <div class="btn-group" role="group">
+          {% if k == 0%}
+          <button id="btnGroupDrop1" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Выбор номера группы
+          </button>
+          {% else %}
+          <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           Выбор номера группы
+          </button>
+         {% endif %}
+         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+           {% for u in range(koll) %}
+               {% if all_g[u] == g %}
+                   {% if all_g_ok[u] == all_g[u] %}
+                       <a class="dropdown-item" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[u], sub=0, p=u, i=i) }}">
+                         <u><b>{{ all_g[u] }}</b></u>
+                       </a>
+                   {% elif all_g_ok[u] != all_g[u] %}
+                       <a class="dropdown-item" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[u], sub=0, p=u, i=i) }}">
+                         <u>{{ all_g[u] }}</u>
+                       </a>
+                   {% endif %}
+               {% elif all_g[u] != g %}
+                   {% if all_g_ok[u] == all_g[u] %}
+                       <a class="dropdown-item" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[u], sub=0, p=u, i=i) }}">
+                         <b>{{ all_g[u] }}</b>
+                       </a>
+                   {% elif all_g_ok[u] != all_g[u] %}
+                       <a class="dropdown-item" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[u], sub=0, p=u, i=i) }}">
+                         {{ all_g[u] }}
+                       </a>
+                   {% endif %}
+               {% endif %}
+           {% endfor %}
+         </div>
+       </div>
+
+        {% else %}
+        <p>Выбор номера группы</p>
+        <div class="btn-group" role="group" aria-label="Basic example">
+          {% for u in range(koll) %}
+              {% if all_g[u] == g %}
+                  {% if all_g_ok[u] == all_g[u] %}
+                      <a class="btn btn-success" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[u], sub=0, p=u, i=i) }}" role="button">
+                        <u><b>{{ all_g[u] }}</b></u>
+                      </a>
+                  {% elif all_g_ok[u] != all_g[u] %}
+                      <a class="btn btn-secondary" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[u], sub=0, p=u, i=i) }}" role="button">
+                        <u>{{ all_g[u] }}</u>
+                      </a>
+                  {% endif %}
+              {% elif all_g[u] != g %}
+                  {% if all_g_ok[u] == all_g[u] %}
+                      <a class="btn btn-outline-success" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[u], sub=0, p=u, i=i) }}" role="button">
+                        <b>{{ all_g[u] }}</b>
+                      </a>
+                  {% elif all_g_ok[u] != all_g[u] %}
+                      <a class="btn btn-outline-secondary" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[u], sub=0, p=u, i=i) }}" role="button">
+                        {{ all_g[u] }}
+                      </a>
+                  {% endif %}
               {% endif %}
-          {% elif all_g[i] != g %}
-              {% if all_g_ok[i] == all_g[i] %}
-                  <a class="nav-link" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[i], sub=0, p=i, i=1) }}">
-                    <b>{{ all_g[i] }}</b>
-                  </a>
-              {% elif all_g_ok[i] != all_g[i] %}
-                  <a class="nav-link disabled" href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=all_g[i], sub=0, p=i, i=1) }}">
-                    {{ all_g[i] }}
-                  </a>
-              {% endif %}
-          {% endif %}
+          {% endfor %}
         </div>
-      {% endfor %}
+        {% endif %}
+      </div>
+
     </div>
-    <p><b>Группа {{ g }}</b></p>
+
+
         <form class="form form-horizontal" method="post" action="" role="form">
           <div class="form-group">
             {{ form.hidden_tag() }}
             {{ wtf.form_errors(form, hiddens="only") }}
             <p><b>Название дисциплины</b></p>
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-sm">
                 {{ wtf.form_field(form.FullSubject) }}
               </div>
-              <div class="col-md-4">
+              <div class="col-sm">
                 {{ wtf.form_field(form.BriefSubject) }}
               </div>
             </div>
             <p><b>Преподаватель теоретической части</b></p>
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-sm">
                 {{ wtf.form_field(form.LecturerName) }}
               </div>
-              <div class="col-md-4">
+              <div class="col-sm">
                 {{ wtf.form_field(form.LecturerDepartment) }}
               </div>
             </div>
             <p><b>Преподаватель практической части</b></p>
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-sm">
                 {{ wtf.form_field(form.PracticianName) }}
               </div>
-              <div class="col-md-4">
+              <div class="col-sm">
                 {{ wtf.form_field(form.PracticianDepartment) }}
               </div>
             </div>
 
             <p>Вид занятия</p>
             <div class="row">
-              <div class="col-md-2">
+              <div class="col-sm">
                 {{ wtf.form_field(form.course_work) }}
               </div>
-              <div class="col-md-2">
+              <div class="col-sm">
                 {{ wtf.form_field(form.practice_work) }}
               </div>
-              <div class="col-md-2">
+              <div class="col-sm">
                 {{ wtf.form_field(form.laboratory_work) }}
               </div>
             </div>
 
-            {{ wtf.form_field(form.AddSub) }}
+            <div class="row">
+              <div class="col-sm text-left">
+                {{ wtf.form_field(form.AddSub) }}
+                {% if i == '1' %}
+                  {% if k == koll %}
+                    <a class="btn btn-primary" href="{{ url_for('form12_promo', username = current_user.username, numForm = numForm, i = 1) }}" role="button">Отправить форму</a><br>
+                  {% endif %}
+                {% elif i == '22' %}
+                  {% if k == koll %}
+                    <a class="btn btn-primary" href="{{ url_for('form0_edit', username = current_user.username, numForm = numForm) }}" role="button">Сохранить форму</a><br>
+                  {% endif %}
+                {% elif i == '4' %}
+                  {% if k == koll %}
+                    <a class="btn btn-primary" href="{{ url_for('form0_edit', username = current_user.username, numForm = numForm) }}" role="button">Сохранить форму</a><br>
+                  {% endif %}
+                {% elif i == '5' %}
+                  {% if k == koll %}
+                    <a class="btn btn-primary" href="{{ url_for('form12_promo', username = current_user.username, numForm = numForm) }}" role="button">Сохранить форму</a><br>
+                  {% endif %}
+                {% endif%}
+
+              </div>
+            </div>
+
+
           </div>
         </form>
 
-  <a class="btn btn-primary" href="{{ url_for('form12_promo', username = current_user.username, numForm = numForm) }}" role="button">Отправить форму</a></p>
+
+
+  <div class="row">
+    <div class="col text-center">
+      <p><b>Предварительный результат заполнения формы</b></p>
+    </div>
+  </div>
+  {% if items == 0 %}
+  <div class="row">
+    <div class="col text-center">
+      <p>В заявку еще не были добавленны группы</p>
+    </div>
+  </div>
+
+  {% elif items != 0 %}
+  <table class="table table-bordered table-hover text-center">
+    <thead class="thead-light">
+    <tr>
+      <th colspan="2">Название дисциплины</th>
+      <th colspan="2">Преподователи теоритической части</th>
+      <th colspan="5">Преподователи практической части</th>
+    </tr>
+    <tr>
+      <th rowspan="2" style="width: 19%">Полное</th>
+      <th rowspan="2" style="width: 8%">Краткое</th>
+      <th rowspan="2" style="width: 17%">ФИО</th>
+      <th rowspan="2" style="width: 10%">Кафедра</th>
+      <th rowspan="2" style="width: 12%">ФИО</th>
+      <th rowspan="2" style="width: 10%">Кафедра</th>
+      <th colspan="3">Вид занятий</th>
+    </tr>
+    <tr>
+      <th style="width: 8%">Курсов.</th>
+      <th style="width: 8%">Практ.</th>
+      <th style="width: 8%">Лабор.</th>
+    </tr>
+    </thead>
+  </table>
+  <table class="table table-bordered table-hover text-center">
+    {% for u in range(koll) %}
+    {% if  items.query.filter(items.NumForm == numForm, items.Group_id == all_g[u]).count() != 0 %}
+    <thead class="thead-light">
+    <tr>
+      <th colspan="9">{{ all_g[u] }}</th>
+    </tr>
+    </thead>
+    {% endif %}
+    {% for item in items.query.filter(items.NumForm == numForm, items.Group_id == all_g[u]).all() %}
+    <tr>
+      <td style="width: 19%">{{ item.FullSubject }}</td>
+      <td style="width: 8%">{{ item.BriefSubject }}</td>
+      <td style="width: 17%">{{ item.LecturerName }}</td>
+      <td style="width: 10%">{{ item.LecturerDepartment }}</td>
+
+      <td style="width: 12%">{{ item.PracticianName }}</td>
+      <td style="width: 10%">{{ item.PracticianDepartment }}</td>
+
+      {% if item.course_work == '1' %}
+      <td style="width: 8%"> Да </td>
+      {% elif item.course_work == '2' %}
+      <td style="width: 8%"> Нет </td>
+      {% endif %}
+
+      {% if item.practice_work == '1' %}
+      <td style="width: 8%"> Да </td>
+      {% elif item.practice_work == '2' %}
+      <td style="width: 8%"> Нет </td>
+      {% endif %}
+
+      {% if item.laboratory_work == '1' %}
+      <td style="width: 8%"> Да </td>
+      {% elif item.laboratory_work == '2' %}
+      <td style="width: 8%"> Нет </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+    {% endfor %}
+  </table>
+  {% endif %}
 
 {% endblock %}

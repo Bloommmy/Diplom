@@ -1,16 +1,41 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
-{% block content %}
-    <h1>Редактировать профиль</h1>
-    <form action="" method="post">
+{% block app_content %}
+
+    <div class="row justify-content-md-center">
+      <div class="col-sm-8 text-center">
+        <h1>Редактирование профиля</h1>
+        <br>
+      </div>
+    </div>
+
+    <form class="form form-horizontal" method="post" action="" role="form">
+      <div class="form-group">
         {{ form.hidden_tag() }}
-        <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}<br>
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
+        {{ wtf.form_errors(form, hiddens="only") }}
+        <div class="row justify-content-md-center">
+          <div class="col-sm-4">
+            {{ wtf.form_field(form.username) }}
+          </div>
+        </div>
+        <div class="row justify-content-md-center">
+          <div class="col-sm-4">
+            {{ wtf.form_field(form.FullName) }}
+          </div>
+        </div>
+        <div class="row justify-content-md-center">
+          <div class="col-sm-4">
+            {{ wtf.form_field(form.Phone) }}
+          </div>
+        </div>
+        <div class="row justify-content-md-center">
+          <div class="col-sm-4 text-center">
+            {{ wtf.form_field(form.submit, class="btn btn-dark") }}
+            <a class="btn btn-dark" href="{{ url_for('PersonalArea', username=current_user.username) }}" role="button">Назад</a>
+          </div>
+        </div>
+
+      </div>
+      </form>
 {% endblock %}

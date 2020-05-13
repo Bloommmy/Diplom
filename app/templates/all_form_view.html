@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+{% if i == '1' %}
+
+<nav class="nav nav-pills nav-justified">
+  <a class="nav-item nav-link active btn btn-secondary" href="{{ url_for('all_form_view', username=current_user.username, i=1) }}">Номер</a>
+  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=2) }}">Год</a>
+  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=3) }}">Автор</a>
+  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=4) }}">Кафедра</a>
+  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=5) }}">Факультет</a>
+  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=6) }}">Статус</a>
+</nav>
+
+
+
+
+    <br>
+    <div class="card-columns">
+      {% for k in range(koll) %}
+
+        <div class="card">
+          <div class="card-header">
+            Заявка №{{ Z[k] }}
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              Факультет: <b>{{ all_forms.query.filter(all_forms.id == Z[k]).first().Faculty }}</b><br>
+              Кафедра: <b>{{ all_forms.query.filter(all_forms.id == Z[k]).first().Department }}</b><br>
+              Год: <b>{{ all_forms.query.filter(all_forms.id == Z[k]).first().Year }}</b><br>
+              Автор: <b>{{all_users.query.filter(all_users.id == (all_forms.query.filter(all_forms.id == Z[k]).first().user_id)).first().FullName }}</b><br>
+              Статус:
+              <b>
+                {% if all_forms.query.filter(all_forms.id == Z[k]).first().Status == None %}
+                В процессe
+                {% elif all_forms.query.filter(all_forms.id == Z[k]).first().Status == 'ok' %}
+                Завершена
+                {% endif %}
+              </b>
+
+
+            </p>
+            <a href="{{ url_for('all_form_view_g', username=current_user.username, i=1, numForm=Z[k]) }}" class="card-link">Просмотр</a>
+            <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=Z[k], g=0, sub=0) }}" class="card-link">Удалить</a>
+          </div>
+        </div>
+
+
+
+      {% endfor %}
+    </div>
+{% elif i == '2' %}
+    <nav class="nav nav-pills nav-justified">
+      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=1) }}">Номер</a>
+      <a class="nav-item nav-link active btn btn-secondary" href="{{ url_for('all_form_view', username=current_user.username, i=2) }}">Год</a>
+      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=3) }}">Автор</a>
+      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=4) }}">Кафедра</a>
+      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=5) }}">Факультет</a>
+      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=6) }}">Статус</a>
+    </nav>
+    <br>
+    {% for k in range(koll) %}
+        <h5>{{ Z[k] }}</h5>
+        <br>
+        <div class="card-columns">
+        {% for g in all_forms.query.filter(all_forms.Year == Z[k]).all() %}
+            <div class="card">
+              <div class="card-header">
+                Заявка №{{ g.id }}
+              </div>
+              <div class="card-body">
+                <p class="card-text">
+                  Факультет: <b>{{ g.Faculty }}</b><br>
+                  Кафедра: <b>{{ g.Department }}</b><br>
+                  Год: <b>{{ g.Year }}</b><br>
+                  Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                  Статус:
+                  <b>
+                    {% if g.Status == None %}
+                    В процессe
+                    {% elif g.Status == 'ok' %}
+                    Завершена
+                    {% endif %}
+                  </b>
+                </p>
+                <a href="{{ url_for('all_form_view_g', username=current_user.username, i=2, numForm=g.id) }}" class="card-link">Просмотр</a>
+                <a href="{{ url_for('form_delet', username=current_user.username, i=4, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+              </div>
+            </div>
+
+        {% endfor %}
+        </div>
+    {% endfor %}
+{% elif i == '3' %}
+    <nav class="nav nav-pills nav-justified">
+      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=1) }}">Номер</a>
+      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=2) }}">Год</a>
+      <a class="nav-item nav-link active btn btn-secondary" href="{{ url_for('all_form_view', username=current_user.username, i=3) }}">Автор</a>
+      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=4) }}">Кафедра</a>
+      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=5) }}">Факультет</a>
+      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=6) }}">Статус</a>
+    </nav>
+    <br>
+    {% for k in range(koll) %}
+        <h5>{{ all_users.query.filter(all_users.id == Z[k]).first().FullName }}</h5>
+        <br>
+        <div class="card-columns">
+        {% for g in all_forms.query.filter(all_forms.user_id == Z[k]).all() %}
+            <div class="card">
+              <div class="card-header">
+                Заявка №{{ g.id }}
+              </div>
+              <div class="card-body">
+                <p class="card-text">
+                  Факультет: <b>{{ g.Faculty }}</b><br>
+                  Кафедра: <b>{{ g.Department }}</b><br>
+                  Год: <b>{{ g.Year }}</b><br>
+                  Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                  Статус:
+                  <b>
+                    {% if g.Status == None %}
+                    В процессe
+                    {% elif g.Status == 'ok' %}
+                    Завершена
+                    {% endif %}
+                  </b>
+                </p>
+                <a href="{{ url_for('all_form_view_g', username=current_user.username, i=3, numForm=g.id) }}" class="card-link">Просмотр</a>
+                <a href="{{ url_for('form_delet', username=current_user.username, i=5, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+              </div>
+            </div>
+
+        {% endfor %}
+        </div>
+    {% endfor %}
+    {% elif i == '4' %}
+        <nav class="nav nav-pills nav-justified">
+          <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=1) }}">Номер</a>
+          <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=2) }}">Год</a>
+          <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=3) }}">Автор</a>
+          <a class="nav-item nav-link active btn btn-secondary" href="{{ url_for('all_form_view', username=current_user.username, i=4) }}">Кафедра</a>
+          <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=5) }}">Факультет</a>
+          <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=6) }}">Статус</a>
+        </nav>
+        <br>
+        {% for k in range(koll) %}
+            <h5>Кафедра {{ Z[k] }}</h5>
+            <br>
+            <div class="card-columns">
+            {% for g in all_forms.query.filter(all_forms.Department == Z[k]).all() %}
+                <div class="card">
+                  <div class="card-header">
+                    Заявка №{{ g.id }}
+                  </div>
+                  <div class="card-body">
+                    <p class="card-text">
+                      Факультет: <b>{{ g.Faculty }}</b><br>
+                      Кафедра: <b>{{ g.Department }}</b><br>
+                      Год: <b>{{ g.Year }}</b><br>
+                      Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                      Статус:
+                      <b>
+                        {% if g.Status == None %}
+                        В процессe
+                        {% elif g.Status == 'ok' %}
+                        Завершена
+                        {% endif %}
+                      </b>
+                    </p>
+                    <a href="{{ url_for('all_form_view_g', username=current_user.username, i=4, numForm=g.id) }}" class="card-link">Просмотр</a>
+                    <a href="{{ url_for('form_delet', username=current_user.username, i=6, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                  </div>
+                </div>
+
+            {% endfor %}
+            </div>
+        {% endfor %}
+        {% elif i == '5' %}
+            <nav class="nav nav-pills nav-justified">
+              <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=1) }}">Номер</a>
+              <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=2) }}">Год</a>
+              <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=3) }}">Автор</a>
+              <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=4) }}">Кафедра</a>
+              <a class="nav-item nav-link active btn btn-secondary" href="{{ url_for('all_form_view', username=current_user.username, i=5) }}">Факультет</a>
+              <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=6) }}">Статус</a>
+            </nav>
+            <br>
+            {% for k in range(koll) %}
+                <h5>Факультет {{ Z[k] }}</h5>
+                <br>
+                <div class="card-columns">
+                {% for g in all_forms.query.filter(all_forms.Faculty == Z[k]).all() %}
+                    <div class="card">
+                      <div class="card-header">
+                        Заявка №{{ g.id }}
+                      </div>
+                      <div class="card-body">
+                        <p class="card-text">
+                          Факультет: <b>{{ g.Faculty }}</b><br>
+                          Кафедра: <b>{{ g.Department }}</b><br>
+                          Год: <b>{{ g.Year }}</b><br>
+                          Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                          Статус:
+                          <b>
+                            {% if g.Status == None %}
+                            В процессe
+                            {% elif g.Status == 'ok' %}
+                            Завершена
+                            {% endif %}
+                          </b>
+                        </p>
+                        <a href="{{ url_for('all_form_view_g', username=current_user.username, i=5, numForm=g.id) }}" class="card-link">Просмотр</a>
+                        <a href="{{ url_for('form_delet', username=current_user.username, i=7, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                      </div>
+                    </div>
+
+                {% endfor %}
+                </div>
+            {% endfor %}
+            {% elif i == '6' %}
+                <nav class="nav nav-pills nav-justified">
+                  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=1) }}">Номер</a>
+                  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=2) }}">Год</a>
+                  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=3) }}">Автор</a>
+                  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=4) }}">Кафедра</a>
+                  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=5) }}">Факультет</a>
+                  <a class="nav-item nav-link active btn btn-secondary" href="{{ url_for('all_form_view', username=current_user.username, i=6) }}">Статус</a>
+                </nav>
+                <br>
+                {% for k in range(koll) %}
+                          <h5>
+                            {% if Z[k] == None %}
+                            В процессe
+                            {% elif Z[k] == 'ok' %}
+                            Завершенные
+                            {% endif %}
+                          </h5>
+                          <br>
+                          <div class="card-columns">
+                          {% for g in all_forms.query.filter(all_forms.Status == Z[k]).all() %}
+                              <div class="card">
+                                <div class="card-header">
+                                  Заявка №{{ g.id }}
+                                </div>
+                                <div class="card-body">
+                                  <p class="card-text">
+                                    Факультет: <b>{{ g.Faculty }}</b><br>
+                                    Кафедра: <b>{{ g.Department }}</b><br>
+                                    Год: <b>{{ g.Year }}</b><br>
+                                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                                    Статус:
+                                    <b>
+                                      {% if g.Status == None %}
+                                      В процессe
+                                      {% elif g.Status == 'ok' %}
+                                      Завершена
+                                      {% endif %}
+                                    </b>
+                                  </p>
+                                  <a href="{{ url_for('all_form_view_g', username=current_user.username, i=6, numForm=g.id) }}" class="card-link">Просмотр</a>
+                                  <a href="{{ url_for('form_delet', username=current_user.username, i=8, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                                </div>
+                              </div>
+
+                          {% endfor %}
+                          </div>
+                          <br>
+                      {% endfor %}
+{% endif %}
+
+
+{% endblock %}

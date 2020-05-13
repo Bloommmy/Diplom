@@ -1,16 +1,50 @@
 {% extends "base.html" %}
 
 {% block app_content %}
+<div class="row justify-content-md-center">
+  <div class="col-sm-6 text-center">
     <h1>Личный кабинет</h1>
     <br>
-    <p><b>ФИО:</b> {{ user.FullName }}</p>
-    <p><b>Логин:</b> {{ user.username }}</p>
-    <p><b>Email:</b> {{ user.email }}</p>
-    <p><b>Номер телефона:</b> {{ user.Phone }}</p>
-    <p><b>Уровень доступа:</b> {{ user.access }}</p>
-    <p><b>Факультет:</b> {{ FacultyN }}</p>
-    <p><b>Кафедра:</b> {{ DepartmentN }}</p>
+  </div>
+</div>
     {% if user == current_user %}
-    <p><a href="{{ url_for('edit_profile') }}">Редактировать профиль</a></p>
+    <table class="table">
+      <tbody>
+    <tr>
+      <th class="text-right">ФИО</th>
+      <td class="text-center">{{ user.FullName }}</td>
+    </tr>
+    <tr>
+      <th class="text-right">Email</th>
+      <td class="text-center">{{ user.email }}</td>
+    </tr>
+    <tr>
+      <th class="text-right">Номер телефона</th>
+      <td class="text-center">{{ user.Phone }}</td>
+    </tr>
+    <tr>
+      <th class="text-right">Уровень доступа</th>
+      <td class="text-center">{{ user.access }}</td>
+    </tr>
+    <tr>
+      <th class="text-right">Факультет</th>
+      <td class="text-center">{{ FacultyN }}</td>
+    </tr>
+    <tr>
+      <th class="text-right">Кафедра</th>
+      <td class="text-center">{{ DepartmentN }}</td>
+    </tr>
+  </tbody>
+</table>
+<div class="row justify-content-md-center">
+  <div class="col-sm-6 text-center">
+    <p><a class="btn btn-dark" href="{{ url_for('edit_profile') }}" role="button">Редактировать профиль</a>
+    <a class="btn btn-dark" href="{{ url_for('reset_password_request', username=current_user.username) }}" role="button">Сброс пароля</a></p>
+
+  </div>
+  </div>
+
+
+
     {% endif %}
 {% endblock %}

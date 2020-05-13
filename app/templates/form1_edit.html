@@ -3,11 +3,56 @@
 
 {% block app_content %}
     <h1>Заявка номер {{ numForm }}. Форма 1. Группа {{ group }}</h1>
-    <div class="row">
-        <div class="col-md-4">
-            {{ wtf.quick_form(form) }}
+    <form class="form form-horizontal" method="post" action="" role="form">
+      <div class="form-group">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_errors(form, hiddens="only") }}
+        <div class="row">
+          <div class="col-sm">
+            {{ wtf.form_field(form.Degree_id) }}
+          </div>
+          <div class="col-sm">
+            <p>Номер курса</p>
+
+              {{ wtf.form_field(form.Course, form_type = "inline") }}
+            
+          </div>
         </div>
-    </div>
+        <p><b>Направление подготовки</b></p>
+        <div class="row">
+          <div class="col-sm">
+            {{ wtf.form_field(form.Direction_id) }}
+          </div>
+          <div class="col-sm">
+            {{ wtf.form_field(form.Direction_name) }}
+          </div>
+        </div>
+        <p><b>Профиль</b></p>
+        <div class="row">
+          <div class="col-sm">
+            {{ wtf.form_field(form.Profile_id) }}
+          </div>
+          <div class="col-sm">
+            {{ wtf.form_field(form.Profile_name) }}
+          </div>
+        </div>
+        <p><b>Информация о группе</b></p>
+        <div class="row">
+          <div class="col-sm">
+            {{ wtf.form_field(form.Group_id) }}
+          </div>
+          <div class="col-sm">
+            {{ wtf.form_field(form.NumStudents) }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm text-left">
+            {{ wtf.form_field(form.Save) }}
+          </div>
+        </div>
+      </div>
+    </form>
+
     <br>
     <br>
 {% endblock %}

@@ -4,6 +4,8 @@
     {% if title %}{{ title }} - DiplomDB{% else %}Добро пожаловать в DiplomDB{% endif %}
 {% endblock %}
 
+
+
 {% block navbar %}
     <nav class="navbar navbar-expand-md bg-dark navbar-dark">
       <div class="container">
@@ -37,18 +39,27 @@
 
 
 {% block content %}
-    <br>
 
+    <div class="container-expand-md">
+        {% block app_content_two %}{% endblock %}
+    </div>
+<br>
     <div class="container">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
-            <div class="alert alert-info" role="alert">{{ message }}</div>
+            <div class="alert alert-primary" role="alert">{{ message }}</div>
             {% endfor %}
         {% endif %}
         {% endwith %}
-        
 
         {% block app_content %}{% endblock %}
+<br>
+
+                <div class="copyright text-center">
+                        <p>&copy;&nbsp;2020 Маркова Ольга</p>
+                </div>
+
+
     </div>
 {% endblock %}
