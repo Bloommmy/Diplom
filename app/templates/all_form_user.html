@@ -1,0 +1,511 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+{% block app_content %}
+<div class="row">
+  <div class="col text-center">
+    <h1>База пользователей</h1>
+    <p>С помощью фильтров и поиска ищите нужную информацию о пользователях</p>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-sm-2">
+    <h5>Фильтры</h5>
+    <ul class="nav flex-column nav-pills" id="pills-tab" role="tablist" aria-orientation="vertical">
+      {% if res == 0 %}
+      <li class="nav-item">
+        <a class="nav-link active" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab" aria-controls="pills-all" aria-selected="true">
+          Все
+          {% if All_User.query.count() != 0 %}
+              <span class="badge badge-light badge-pill">{{ All_User.query.count() }}</span>
+          {% endif %}
+        </a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab" aria-controls="pills-all" aria-selected="true">
+          Все
+          {% if All_User.query.count() != 0 %}
+              <span class="badge badge-light badge-pill">{{ All_User.query.count() }}</span>
+          {% endif %}
+        </a>
+      </li>
+      {% endif %}
+      <li class="nav-item">
+        <a class="nav-link" id="pills-ae-tab" data-toggle="pill" href="#pills-ae" role="tab" aria-controls="pills-ae" aria-selected="true">
+          А-Ё
+          {% if koll1 != 0 %}
+              <span class="badge badge-light badge-pill">{{ koll1 }}</span>
+          {% endif %}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="pills-hm-tab" data-toggle="pill" href="#pills-hm" role="tab" aria-controls="pills-hm" aria-selected="false">
+          Ж - М
+          {% if koll2 != 0 %}
+              <span class="badge badge-light badge-pill">{{ koll2 }}</span>
+          {% endif %}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="pills-ny-tab" data-toggle="pill" href="#pills-ny" role="tab" aria-controls="pills-ny" aria-selected="false">
+          Н - У
+          {% if koll3 != 0 %}
+              <span class="badge badge-light badge-pill">{{ koll3 }}</span>
+          {% endif %}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="pills-fh-tab" data-toggle="pill" href="#pills-fh" role="tab" aria-controls="pills-fh" aria-selected="false">
+          Ф - Щ
+          {% if koll4 != 0 %}
+              <span class="badge badge-light badge-pill">{{ koll4 }}</span>
+          {% endif %}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="pills-ji-tab" data-toggle="pill" href="#pills-ji" role="tab" aria-controls="pills-ji" aria-selected="false">
+          Ы - Я
+          {% if koll5 != 0 %}
+              <span class="badge badge-light badge-pill">{{ koll5 }}</span>
+          {% endif %}
+        </a>
+      </li>
+      {% if res != 0 %}
+      <li class="nav-item">
+        <a class="nav-link active" id="pills-s-tab" data-toggle="pill" href="#pills-s" role="tab" aria-controls="pills-s" aria-selected="false">
+          Результаты поиска
+          {% if res.count() != 0 %}
+              <span class="badge badge-light badge-pill">{{ res.count() }}</span>
+          {% endif %}
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+
+
+      <hr>
+
+      <h5>Поиск</h5>
+      <form class="form form-horizontal" method="post" action="" role="form">
+        <div class="form-group">
+          {{ form.hidden_tag() }}
+          {{ wtf.form_errors(form, hiddens="only") }}
+          {{ wtf.form_field(form.WhoSearch) }}
+  <p>Тип поиска</p>
+  <div class="row">
+    <div class="col">
+      {{ wtf.form_field(form.TypeSearch) }}
+    </div>
+
+  </div>
+
+
+  <br>
+          {{ wtf.form_field(form.Search, class = "btn btn-primary btn-block") }}
+
+      </div>
+    </form>
+
+  </div>
+
+  <div class="col-sm-10">
+    <div class="tab-content" id="pills-tabContent">
+      {% if res == 0 %}
+      <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
+        <h5>Все пользователи</h5>
+        <br>
+        <div class="card-columns">
+          {% for r in All_User.query.all() %}
+            <div class="card">
+              <div class="card-header">
+                {{ r.FullName }}
+              </div>
+              <div class="card-body">
+                <p class="card-text">
+                  id: <b>{{ r.id }}</b><br>
+                  username: <b>{{ r.username }}</b><br>
+                  email: <b>{{ r.email }}</b><br>
+                  Факультете: <b>{{ r.Faculty }}</b><br>
+                  Кафедра: <b>{{ r.Department }}</b><br>
+                  Телефон: <b>{{ r.Phone }}</b><br>
+                  Уровень доступа: <b>{{ r.access }}</b><br>
+                </p>
+              </div>
+            </div>
+
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="pills-ae" role="tabpanel" aria-labelledby="pills-ae-tab">
+      <h5>А-Ё</h5>
+      <br>
+      {% if koll1 != 0 %}
+      <div class="card-columns">
+        {% for u in group1 %}
+        {% for r in All_User.query.filter(All_User.id == u).all() %}
+        <div class="card">
+          <div class="card-header">
+            {{ r.FullName }}
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              id: <b>{{ r.id }}</b><br>
+              username: <b>{{ r.username }}</b><br>
+              email: <b>{{ r.email }}</b><br>
+              Факультете: <b>{{ r.Faculty }}</b><br>
+              Кафедра: <b>{{ r.Department }}</b><br>
+              Телефон: <b>{{ r.Phone }}</b><br>
+              Уровень доступа: <b>{{ r.access }}</b><br>
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+        {% endfor %}
+      </div>
+      {% else %}
+      <h5>Пусто :(</h5>
+      {% endif %}
+      </div>
+      <div class="tab-pane fade" id="pills-hm" role="tabpanel" aria-labelledby="pills-hm-tab">
+        <h5>Ж-М</h5>
+        <br>
+        {% if koll2 != 0 %}
+        <div class="card-columns">
+          {% for u in group2 %}
+          {% for r in All_User.query.filter(All_User.id == u).all() %}
+          <div class="card">
+            <div class="card-header">
+              {{ r.FullName }}
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                id: <b>{{ r.id }}</b><br>
+                username: <b>{{ r.username }}</b><br>
+                email: <b>{{ r.email }}</b><br>
+                Факультете: <b>{{ r.Faculty }}</b><br>
+                Кафедра: <b>{{ r.Department }}</b><br>
+                Телефон: <b>{{ r.Phone }}</b><br>
+                Уровень доступа: <b>{{ r.access }}</b><br>
+              </p>
+            </div>
+          </div>
+          {% endfor %}
+          {% endfor %}
+      </div>
+      {% else %}
+            <h5>Пусто :(</h5>
+      {% endif %}
+      </div>
+      <div class="tab-pane fade" id="pills-ny" role="tabpanel" aria-labelledby="pills-ny-tab">
+        <h5>Н-У</h5>
+        <br>
+        {% if koll3 != 0 %}
+        <div class="card-columns">
+          {% for u in group3 %}
+          {% for r in All_User.query.filter(All_User.id == u).all() %}
+          <div class="card">
+            <div class="card-header">
+              {{ r.FullName }}
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                id: <b>{{ r.id }}</b><br>
+                username: <b>{{ r.username }}</b><br>
+                email: <b>{{ r.email }}</b><br>
+                Факультете: <b>{{ r.Faculty }}</b><br>
+                Кафедра: <b>{{ r.Department }}</b><br>
+                Телефон: <b>{{ r.Phone }}</b><br>
+                Уровень доступа: <b>{{ r.access }}</b><br>
+              </p>
+            </div>
+          </div>
+          {% endfor %}
+          {% endfor %}
+      </div>
+      {% else %}
+            <h5>Пусто :(</h5>
+      {% endif %}
+      </div>
+      <div class="tab-pane fade" id="pills-fh" role="tabpanel" aria-labelledby="pills-fh-tab">
+        <h5>Ф-Щ</h5>
+        <br>
+        {% if koll4 != 0 %}
+        <div class="card-columns">
+          {% for u in group4 %}
+          {% for r in All_User.query.filter(All_User.id == u).all() %}
+          <div class="card">
+            <div class="card-header">
+              {{ r.FullName }}
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                id: <b>{{ r.id }}</b><br>
+                username: <b>{{ r.username }}</b><br>
+                email: <b>{{ r.email }}</b><br>
+                Факультете: <b>{{ r.Faculty }}</b><br>
+                Кафедра: <b>{{ r.Department }}</b><br>
+                Телефон: <b>{{ r.Phone }}</b><br>
+                Уровень доступа: <b>{{ r.access }}</b><br>
+              </p>
+            </div>
+          </div>
+          {% endfor %}
+          {% endfor %}
+      </div>
+      {% else %}
+            <h5>Пусто :(</h5>
+      {% endif %}
+      </div>
+      <div class="tab-pane fade" id="pills-ji" role="tabpanel" aria-labelledby="pills-ji-tab">
+        <h5>Ы-Я</h5>
+        <br>
+        {% if koll5 != 0 %}
+        <div class="card-columns">
+          {% for u in group5 %}
+          {% for r in All_User.query.filter(All_User.id == u).all() %}
+          <div class="card">
+            <div class="card-header">
+              {{ r.FullName }}
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                id: <b>{{ r.id }}</b><br>
+                username: <b>{{ r.username }}</b><br>
+                email: <b>{{ r.email }}</b><br>
+                Факультете: <b>{{ r.Faculty }}</b><br>
+                Кафедра: <b>{{ r.Department }}</b><br>
+                Телефон: <b>{{ r.Phone }}</b><br>
+                Уровень доступа: <b>{{ r.access }}</b><br>
+              </p>
+            </div>
+          </div>
+          {% endfor %}
+          {% endfor %}
+      </div>
+      {% else %}
+            <h5>Пусто :(</h5>
+      {% endif %}
+      </div>
+
+      {% elif res != 0 %}
+      <div class="tab-pane fade" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
+        <h5>Все пользователи</h5>
+        <br>
+        <div class="card-columns">
+          {% for r in All_User.query.all() %}
+            <div class="card">
+              <div class="card-header">
+                {{ r.FullName }}
+              </div>
+              <div class="card-body">
+                <p class="card-text">
+                  id: <b>{{ r.id }}</b><br>
+                  username: <b>{{ r.username }}</b><br>
+                  email: <b>{{ r.email }}</b><br>
+                  Факультете: <b>{{ r.Faculty }}</b><br>
+                  Кафедра: <b>{{ r.Department }}</b><br>
+                  Телефон: <b>{{ r.Phone }}</b><br>
+                  Уровень доступа: <b>{{ r.access }}</b><br>
+                </p>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-ae" role="tabpanel" aria-labelledby="pills-ae-tab">
+      <h5>А-Ё</h5>
+      <br>
+      {% if koll1 != 0 %}
+      <div class="card-columns">
+        {% for u in group1 %}
+        {% for r in All_User.query.filter(All_User.id == u).all() %}
+        <div class="card">
+          <div class="card-header">
+            {{ r.FullName }}
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              id: <b>{{ r.id }}</b><br>
+              username: <b>{{ r.username }}</b><br>
+              email: <b>{{ r.email }}</b><br>
+              Факультете: <b>{{ r.Faculty }}</b><br>
+              Кафедра: <b>{{ r.Department }}</b><br>
+              Телефон: <b>{{ r.Phone }}</b><br>
+              Уровень доступа: <b>{{ r.access }}</b><br>
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+        {% endfor %}
+      </div>
+      {% else %}
+            <h5>Пусто :(</h5>
+      {% endif %}
+      </div>
+
+      <div class="tab-pane fade" id="pills-hm" role="tabpanel" aria-labelledby="pills-hm-tab">
+        <h5>Ж-М</h5>
+        <br>
+        {% if koll2 != 0 %}
+        <div class="card-columns">
+          {% for u in group2 %}
+          {% for r in All_User.query.filter(All_User.id == u).all() %}
+          <div class="card">
+            <div class="card-header">
+              {{ r.FullName }}
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                id: <b>{{ r.id }}</b><br>
+                username: <b>{{ r.username }}</b><br>
+                email: <b>{{ r.email }}</b><br>
+                Факультете: <b>{{ r.Faculty }}</b><br>
+                Кафедра: <b>{{ r.Department }}</b><br>
+                Телефон: <b>{{ r.Phone }}</b><br>
+                Уровень доступа: <b>{{ r.access }}</b><br>
+              </p>
+            </div>
+          </div>
+          {% endfor %}
+          {% endfor %}
+      </div>
+      {% else %}
+            <h5>Пусто :(</h5>
+      {% endif %}
+      </div>
+
+      <div class="tab-pane fade" id="pills-ny" role="tabpanel" aria-labelledby="pills-ny-tab">
+        <h5>Н-У</h5>
+        <br>
+        {% if koll3 != 0 %}
+        <div class="card-columns">
+          {% for u in group3 %}
+          {% for r in All_User.query.filter(All_User.id == u).all() %}
+          <div class="card">
+            <div class="card-header">
+              {{ r.FullName }}
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                id: <b>{{ r.id }}</b><br>
+                username: <b>{{ r.username }}</b><br>
+                email: <b>{{ r.email }}</b><br>
+                Факультете: <b>{{ r.Faculty }}</b><br>
+                Кафедра: <b>{{ r.Department }}</b><br>
+                Телефон: <b>{{ r.Phone }}</b><br>
+                Уровень доступа: <b>{{ r.access }}</b><br>
+              </p>
+            </div>
+          </div>
+          {% endfor %}
+          {% endfor %}
+      </div>
+      {% else %}
+            <h5>Пусто :(</h5>
+      {% endif %}
+      </div>
+
+      <div class="tab-pane fade" id="pills-fh" role="tabpanel" aria-labelledby="pills-fh-tab">
+        <h5>Ф-Щ</h5>
+        <br>
+        {% if koll4 != 0 %}
+        <div class="card-columns">
+          {% for u in group4 %}
+          {% for r in All_User.query.filter(All_User.id == u).all() %}
+          <div class="card">
+            <div class="card-header">
+              {{ r.FullName }}
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                id: <b>{{ r.id }}</b><br>
+                username: <b>{{ r.username }}</b><br>
+                email: <b>{{ r.email }}</b><br>
+                Факультете: <b>{{ r.Faculty }}</b><br>
+                Кафедра: <b>{{ r.Department }}</b><br>
+                Телефон: <b>{{ r.Phone }}</b><br>
+                Уровень доступа: <b>{{ r.access }}</b><br>
+              </p>
+            </div>
+          </div>
+          {% endfor %}
+          {% endfor %}
+      </div>
+      {% else %}
+            <h5>Пусто :(</h5>
+      {% endif %}
+      </div>
+
+      <div class="tab-pane fade" id="pills-ji" role="tabpanel" aria-labelledby="pills-ji-tab">
+        <h5>Ы-Я</h5>
+        <br>
+        {% if koll5 != 0 %}
+        <div class="card-columns">
+          {% for u in group5 %}
+          {% for r in All_User.query.filter(All_User.id == u).all() %}
+          <div class="card">
+            <div class="card-header">
+              {{ r.FullName }}
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                id: <b>{{ r.id }}</b><br>
+                username: <b>{{ r.username }}</b><br>
+                email: <b>{{ r.email }}</b><br>
+                Факультете: <b>{{ r.Faculty }}</b><br>
+                Кафедра: <b>{{ r.Department }}</b><br>
+                Телефон: <b>{{ r.Phone }}</b><br>
+                Уровень доступа: <b>{{ r.access }}</b><br>
+              </p>
+            </div>
+          </div>
+          {% endfor %}
+          {% endfor %}
+      </div>
+      {% else %}
+            <h5>Пусто :(</h5>
+      {% endif %}
+      </div>
+
+      <div class="tab-pane fade show active" id="pills-s" role="tabpanel" aria-labelledby="pills-s-tab">
+        <h5>Результаты поиска</h5>
+        <br>
+        {% if res.count() != 0 %}
+            <div class="card-columns">
+              {% for r in res.all() %}
+
+                <div class="card">
+                  <div class="card-header">
+                    {{ r.FullName }}
+                  </div>
+                  <div class="card-body">
+                    <p class="card-text">
+                      id: <b>{{ r.id }}</b><br>
+                      username: <b>{{ r.username }}</b><br>
+                      email: <b>{{ r.email }}</b><br>
+                      Факультете: <b>{{ r.Faculty }}</b><br>
+                      Кафедра: <b>{{ r.Department }}</b><br>
+                      Телефон: <b>{{ r.Phone }}</b><br>
+                      Уровень доступа: <b>{{ r.access }}</b><br>
+                    </p>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+        {% else %}
+          <h5>По данному запросу ничего не найдено</h5>
+        {% endif %}
+      </div>
+
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}

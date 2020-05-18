@@ -143,6 +143,10 @@
                   {% if k == koll %}
                     <a class="btn btn-primary" href="{{ url_for('form12_promo', username = current_user.username, numForm = numForm) }}" role="button">Сохранить форму</a><br>
                   {% endif %}
+                  {% elif i == '55' %}
+                    {% if k == koll %}
+                      <a class="btn btn-primary" href="{{ url_for('all_form_view_g', username = current_user.username, numForm = numForm) }}" role="button">Сохранить форму</a><br>
+                    {% endif %}
                 {% endif%}
 
               </div>

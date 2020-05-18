@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+{% block app_content %}
+<!-- Название страницы -->
+    <div class="row">
+      <div class="col text-center">
+        <h1>База заявок</h1>
+        <p>С&nbsp;помощью фильтров ищите нужную первичную информацию о&nbsp;группа и&nbsp;дисциплинах.</p>
+      </div>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="col-sm-2">
+          <!-- Меню фильтров -->
+          <h5>Фильтры</h5>
+          <ul class="nav flex-column nav-pills" id="pills-tab1" role="tablist" aria-orientation="vertical">
+            {% if res == 0 %}
+            <li class="nav-item">
+              <a class="nav-link active" id="pills-num-tab" data-toggle="pill" href="#pills-num" role="tab" aria-controls="pills-num" aria-selected="true">
+                Номер
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="pills-avtor-tab" data-toggle="pill" href="#pills-avtor" role="tab" aria-controls="pills-avtor" aria-selected="false">
+                Автор
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="pills-fak-tab" data-toggle="pill" href="#pills-fak" role="tab" aria-controls="pills-fak" aria-selected="false">
+                Факультет
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="pills-status-tab" data-toggle="pill" href="#pills-status" role="tab" aria-controls="pills-status" aria-selected="false">
+                Статус
+              </a>
+            </li>
+            {% elif res != 0 %}
+            <li class="nav-item">
+              <a class="nav-link" id="pills-num-tab" data-toggle="pill" href="#pills-num" role="tab" aria-controls="pills-num" aria-selected="true">
+                Номер
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="pills-avtor-tab" data-toggle="pill" href="#pills-avtor" role="tab" aria-controls="pills-avtor" aria-selected="false">
+                Автор
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="pills-fak-tab" data-toggle="pill" href="#pills-fak" role="tab" aria-controls="pills-fak" aria-selected="false">
+                Факультет
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="pills-status-tab" data-toggle="pill" href="#pills-status" role="tab" aria-controls="pills-status" aria-selected="false">
+                Статус
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" id="pills-s-tab" data-toggle="pill" href="#pills-s" role="tab" aria-controls="pills-s" aria-selected="false">
+                Результат поиска
+                {% if res.count() != 0 %}
+                    <span class="badge badge-light badge-pill">{{ res.count() }}</span>
+                {% endif %}
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+          <div class="tab-content" id="pills-tabContent" aria-labelledby="pills-tab1">
+            {% if res == 0 %}
+            <div class="tab-pane fade show active" id="pills-num" role="tabpanel" aria-labelledby="pills-num-tab">
+              <hr>
+              <ul class="nav flex-column nav-pills" id="pills-tab2" role="tablist" aria-orientation="vertical">
+                <li class="nav-item">
+                  <a class="nav-link active" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab" aria-controls="pills-all" aria-selected="true">
+                    Все
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-one-tab" data-toggle="pill" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="true">
+                    1 - 11
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-two-tab" data-toggle="pill" href="#pills-two" role="tab" aria-controls="pills-two" aria-selected="false">
+                    12 - 22
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-three-tab" data-toggle="pill" href="#pills-three" role="tab" aria-controls="pills-three" aria-selected="false">
+                    23 - 33
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-four-tab" data-toggle="pill" href="#pills-four" role="tab" aria-controls="pills-four" aria-selected="false">
+                    34 - ...
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="tab-pane fade" id="pills-avtor" role="tabpanel" aria-labelledby="pills-avtor-tab">
+              <hr>
+              <ul class="nav flex-column nav-pills" id="pills-tab3" role="tablist" aria-orientation="vertical" aria-labelledby="pills-tabContent3">
+                <li class="nav-item">
+                  <a class="nav-link active" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab" aria-controls="pills-all1" aria-selected="true">
+                    Все
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-one1-tab" data-toggle="pill" href="#pills-one1" role="tab" aria-controls="pills-one1" aria-selected="true">
+                    А - Ё
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-two1-tab" data-toggle="pill" href="#pills-two1" role="tab" aria-controls="pills-two1" aria-selected="false">
+                    Ж - М
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-three1-tab" data-toggle="pill" href="#pills-three1" role="tab" aria-controls="pills-three1" aria-selected="false">
+                    Н - У
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-four1-tab" data-toggle="pill" href="#pills-four1" role="tab" aria-controls="pills-four1" aria-selected="false">
+                    Ф - Щ
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-five1-tab" data-toggle="pill" href="#pills-five1" role="tab" aria-controls="pills-five1" aria-selected="false">
+                    Ы - Я
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="tab-pane fade" id="pills-fak" role="tabpanel" aria-labelledby="pills-fak-tab">
+
+            </div>
+            {% elif res != 0 %}
+            <div class="tab-pane fade" id="pills-num" role="tabpanel" aria-labelledby="pills-num-tab">
+
+            </div>
+            <div class="tab-pane fade" id="pills-avtor" role="tabpanel" aria-labelledby="pills-avtor-tab">
+
+            </div>
+            <div class="tab-pane fade" id="pills-fak" role="tabpanel" aria-labelledby="pills-fak-tab">
+
+            </div>
+            {% endif %}
+          </div>
+
+
+          <hr>
+          <!-- Поиск -->
+          <h5>Поиск</h5>
+          <form class="form form-horizontal" method="post" action="" role="form">
+            <div class="form-group">
+              {{ form.hidden_tag() }}
+              {{ wtf.form_errors(form, hiddens="only") }}
+              {{ wtf.form_field(form.WhoSearch) }}
+              <p>Тип поиска</p>
+              <div class="row">
+                <div class="col">
+                  {{ wtf.form_field(form.TypeSearch) }}
+                </div>
+              </div>
+              <br>
+              {{ wtf.form_field(form.Search, class = "btn btn-primary btn-block") }}
+          </div>
+        </form>
+
+        </div>
+        <div class="col-sm-10">
+          <div class="tab-content" id="pills-tabContent2" aria-labelledby="pills-tab2">
+            <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
+              <h5>Все заявки</h5>
+            </div>
+            <div class="tab-pane fade" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab">
+              <h5>1 - 11</h5>
+
+            </div>
+            <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">
+              <h5>12 - 22</h5>
+
+            </div>
+            <div class="tab-pane fade" id="pills-three" role="tabpanel" aria-labelledby="pills-three-tab">
+              <h5>23 - 33</h5>
+
+            </div>
+            <div class="tab-pane fade" id="pills-four" role="tabpanel" aria-labelledby="pills-four-tab">
+              <h5>33 - ...</h5>
+
+            </div>
+          </div>
+
+          <div class="tab-content" id="pills-tabContent3" aria-labelledby="pills-tab3">
+            <div class="tab-pane fade show active" id="pills-all1" role="tabpanel" aria-labelledby="pills-all1-tab">
+              <h5>Все заявки</h5>
+            </div>
+            <div class="tab-pane fade" id="pills-one1" role="tabpanel" aria-labelledby="pills-one1-tab">
+              <h5>А - Ё</h5>
+
+            </div>
+            <div class="tab-pane fade" id="pills-two1" role="tabpanel" aria-labelledby="pills-two1-tab">
+              <h5>Ж - М</h5>
+
+            </div>
+            <div class="tab-pane fade" id="pills-three1" role="tabpanel" aria-labelledby="pills-three1-tab">
+              <h5>Н - У</h5>
+
+            </div>
+            <div class="tab-pane fade" id="pills-four1" role="tabpanel" aria-labelledby="pills-four1-tab">
+              <h5>Ф - Щ</h5>
+
+            </div>
+            <div class="tab-pane fade" id="pills-five1" role="tabpanel" aria-labelledby="pills-five1-tab">
+              <h5>Ы - Я</h5>
+
+            </div>
+          </div>
+        </div>
+
+    </div>
+
+{% endblock %}

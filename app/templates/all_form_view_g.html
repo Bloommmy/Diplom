@@ -7,12 +7,28 @@
     <h1>Заявка №{{ numForm }}</h1>
   </div>
   <div class="col-sm text-right">
-    
-    <a class="btn btn-secondary" href="{{ url_for('all_form_view', username=current_user.username, i=i) }}" role="button">Назад</a><br>
+
+    <a class="btn btn-secondary" href="{{ url_for('all_form_view', username=current_user.username) }}" role="button">Назад</a><br>
 
   </div>
 </div>
+{% if k != 0  %}
+<div class="alert alert-primary" role="alert">
+  <h4 class="alert-heading">Заявка не полная!</h4>
+  <div class="row">
+    <div class="col-sm">
 
+      <p>
+    {% if k != 0 %}
+      - Заполнить форму 2 для следующих групп: {% for u in g_no_ok %}
+                                                    <a href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=u, sub=0, p=0, i=55) }}">{{ u }}</a>
+                                                    {% endfor %}<br>
+    {% endif %}
+      </p>
+    </div>
+  </div>
+</div>
+{% endif %}
 <p>
 <table border="0" width="100%">
   <td><b>Факультет</b> <u>{{ f0.Faculty }}</u></td>
@@ -23,6 +39,7 @@
 
 <p>
     <b>Форма 1.</b>
+    <a href="{{ url_for('form1', username=current_user.username, numForm=numForm, g=0, i=44) }}">Добавить группу</a>
 </p>
 {% if f1 != 0 %}
 <table class="table table-bordered table-hover text-center">
@@ -33,6 +50,7 @@
     <th colspan="2" style="width: 35%">Профиль</th>
     <th rowspan="2" style="width: 10%">Номер <br> группы</th>
     <th rowspan="2" style="width: 10%">Число <br> учащихся</th>
+    <th rowspan="2" style="width: 10%"></th>
   </tr>
   <tr>
     <th style="width: 10%">Код</th>
@@ -49,7 +67,7 @@
                   {% if items.query.filter(items.NumForm == numForm, items.Degree_id == 1, items.Course == u).count() != 0 %}
                   <thead class="thead-light">
                   <tr>
-                    <th colspan="6">
+                    <th colspan="7">
                       {% if u == 1 %}
                         I курс
                       {% elif u == 2 %}
@@ -72,6 +90,8 @@
                     <td style="width: 25%">{{ item.Profile_name }}</td>
                     <td style="width: 10%">{{ item.Group_id }}</td>
                     <td style="width: 10%">{{ item.NumStudents }}</td>
+                    <td style="width: 10%"><a href="{{ url_for('form1_edit', username=current_user.username, numForm=numForm, group=item.Group_id, i=44) }}">Изменить</a><br>
+                    <a href="{{ url_for('form_delet', username=current_user.username, numForm=numForm, who = g, i=44, g=item.Group_id, sub=0) }}">Удалить</a></td>
                   </tr>
               {% endfor %}
           {% endfor %}
@@ -84,7 +104,7 @@
               {% if items.query.filter(items.NumForm == numForm, items.Degree_id == 2, items.Course == u).count() != 0 %}
                     <thead class="thead-light">
                     <tr>
-                      <th colspan="6">
+                      <th colspan="7">
                         {% if u == 1 %}
                           I курс
                         {% elif u == 2 %}
@@ -102,6 +122,8 @@
                   <td style="width: 25%">{{ item.Profile_name }}</td>
                   <td style="width: 10%">{{ item.Group_id }}</td>
                   <td style="width: 10%">{{ item.NumStudents }}</td>
+                  <td style="width: 10%"><a href="{{ url_for('form1_edit', username=current_user.username, numForm=numForm, group=item.Group_id, i=44) }}">Изменить</a><br>
+                  <a href="{{ url_for('form_delet', username=current_user.username, numForm=numForm, who = g, i=44, g=item.Group_id, sub=0) }}">Удалить</a></td>
                 </tr>
             {% endfor %}
           {% endfor %}
@@ -115,7 +137,7 @@
               {% if items.query.filter(items.NumForm == numForm, items.Degree_id == 3, items.Course == u).count() != 0 %}
               <thead class="thead-light">
               <tr>
-                <th colspan="6">
+                <th colspan="7">
                   {% if u == 1 %}
                     I курс
                   {% elif u == 2 %}
@@ -139,6 +161,8 @@
                 <td style="width: 25%">{{ item.Profile_name }}</td>
                 <td style="width: 10%">{{ item.Group_id }}</td>
                 <td style="width: 10%">{{ item.NumStudents }}</td>
+                <td style="width: 10%"><a href="{{ url_for('form1_edit', username=current_user.username, numForm=numForm, group=item.Group_id, i=44) }}">Изменить</a><br>
+                <a href="{{ url_for('form_delet', username=current_user.username, numForm=numForm, who = g, i=44, g=item.Group_id, sub=0) }}">Удалить</a></td>
               </tr>
             {% endfor %}
           {% endfor %}
@@ -148,6 +172,7 @@
 
 <p>
     <b>Форма 2.</b>
+    <a href="{{ url_for('form2', username=current_user.username, numForm=numForm, g=0, sub=0, p=0, i = 55) }}">Добавить дисциплинну</a>
 </p>
 {% if f2 != 0 %}
     <table class="table table-bordered table-hover text-center">
@@ -156,6 +181,7 @@
             <th colspan="2">Название дисциплины</th>
             <th colspan="2">Преподователи теоритической части</th>
             <th colspan="5">Преподователи практической части</th>
+            <th rowspan="3" style="width: 10%"></th>
           </tr>
           <tr>
             <th rowspan="2" style="width: 17%">Полное</th>
@@ -178,7 +204,7 @@
               {% if items_2.query.filter(items_2.NumForm == numForm, items_2.Group_id == G[u]).count() != 0 %}
               <thead class="thead-light">
               <tr>
-                <th colspan="9">{{ G[u] }}</th>
+                <th colspan="10">{{ G[u] }}</th>
               </tr>
               </thead>
               {% endif %}
@@ -209,6 +235,10 @@
                 {% elif item.laboratory_work == '2' %}
                 <td style="width: 7%"> Нет </td>
                 {% endif %}
+                <td style="width: 10%">
+                  <a href="{{ url_for('form2_edit', username=current_user.username, numForm=numForm, group=item.Group_id, sub=item.id, i = 44) }}">Изменить</a><br>
+                  <a href="{{ url_for('form_delet', username=current_user.username, numForm=numForm, who = s, i = 55, g=item.Group_id, sub = item.id) }}">Удалить</a>
+                </td>
               </tr>
           {% endfor %}
       {% endfor %}

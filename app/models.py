@@ -102,3 +102,11 @@ def load_user(id):
     return User.query.get(int(id))
 
 #u = User(username='susan', FullName='Маркова Ольга Николаевна', email='susan@example.com', Faculty='КТИ', Department ='АПУ', Phone='+79992118773', access='admin')
+
+#u = User(username='nnn', FullName='Никитин Никита Никитович', email='nik@example.com', Faculty='РТ', Department ='ТОР', Phone='+79999999999', access='user')
+
+#u = User(username='aaa', FullName='Александрова Александра Александровна', email='alek@example.com', Faculty='ЭА', Department ='РАПС', Phone='89999999999', access='user')
+
+#u = User(username='hhh', FullName='Чурзин Юрий Анатольевич', email='hur@example.com', Faculty='НПРОТЕХ', Department ='МСК', Phone='81234567890', access='user')
+
+#j = User(username='eee', FullName='Энгель Антон Иосифович', email='eng@example.com', Faculty='ИБС', Department ='ИИСТ', Phone='80987654321', access='user')

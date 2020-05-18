@@ -20,6 +20,8 @@ from app.forms import ResetPasswordRequestForm
 from app.email import send_password_reset_email
 from app.email import send_new_user
 from app.forms import ResetPasswordForm
+from app.forms import User_Search
+
 import json
 
 @app.route('/')
@@ -289,25 +291,26 @@ def form_delet(username, numForm,i, g, sub):
         db.session.commit()
         flash('Дисциплина успешно удалена')
         return redirect(url_for('form0_edit', username = current_user.username, numForm = numForm))
-    elif i == '3' or i == '4' or i == '5' or i == '6' or i == '7' or i == '8':
+    elif i == '3':
         f = Form_all.query.get(numForm)
         db.session.delete(f)
         db.session.commit()
         flash('Заявка {} успешно удалена'.format(numForm))
-        n = 0
-        if i == '3':
-            n = 1
-        elif i == '4':
-            n = 2
-        elif i == '5':
-            n = 3
-        elif i == '6':
-            n = 4
-        elif i == '7':
-            n = 5
-        elif i == '8':
-            n = 6
-        return redirect(url_for('all_form_view', username = current_user.username, i = n ))
+        return redirect(url_for('all_form_view', username = current_user.username))
+    elif i == '44':
+        f = Form_one.query.filter(Form_one.NumForm == numForm, Form_one.Group_id == g).first()
+        db.session.delete(f)
+        db.session.commit()
+        flash('Группа {} успешно удалена'.format(g))
+        return redirect(url_for('all_form_view_g', username = current_user.username, numForm = numForm))
+    elif i == '55':
+        f = Form_two.query.filter(Form_two.NumForm == numForm, Form_two.Group_id == g, Form_two.id == sub).first()
+        db.session.delete(f)
+        db.session.commit()
+        flash('Дисциплина успешно удалена')
+        return redirect(url_for('all_form_view_g', username = current_user.username, numForm = numForm))
+
+
 
 
 @app.route('/form_clean/<username>/<numForm>/<i>')
@@ -482,7 +485,7 @@ def form1(username, numForm, g, i):
         b = [1,2,3,4]
         m = [1,2]
         c = [1,2,3,4,5]
-    elif i == '11' or i == '21' or i == '22' or i == '23':
+    elif i == '11' or i == '21' or i == '22' or i == '23' or i == '44':
         items1=Form_one.query.filter(Form_one.NumForm == numForm, Form_one.Degree_id == 1).count()
         items2=Form_one.query.filter(Form_one.NumForm == numForm, Form_one.Degree_id == 2).count()
         items3=Form_one.query.filter(Form_one.NumForm == numForm, Form_one.Degree_id == 3).count()
@@ -559,6 +562,8 @@ def form1_edit(username, numForm, group, i):
             return redirect(url_for('form12_promo', username = current_user.username, numForm = numForm, i = 1))
         elif i == '2':
             return redirect(url_for('form0_edit', username = current_user.username, numForm = numForm))
+        elif i == '44':
+            return redirect(url_for('all_form_view_g', username = current_user.username, numForm = numForm))
 
     elif request.method == 'GET':
         u = Form_one.query.filter(Form_one.NumForm == numForm, Form_one.Group_id == group).first()
@@ -623,18 +628,7 @@ def form2(username, numForm, g, sub, p, i):
                                 username = current_user.username,
                                 numForm = numForm, g = g, sub = int(sub), p=p, i=i))
 
-    elif request.method == 'GET':
-        u = Form_two.query.filter(Form_two.NumForm == numForm, Form_two.Group_id == g).order_by(Form_two.timestamp.desc()).first()
-        if u != None:
-            form.FullSubject.data = u.FullSubject
-            form.BriefSubject.data = u.BriefSubject
-            form.LecturerName.data = u.LecturerName
-            form.LecturerDepartment.data = u.LecturerDepartment
-            form.PracticianName.data = u.PracticianName
-            form.PracticianDepartment.data = u.PracticianDepartment
-            form.course_work.data = u.course_work
-            form.practice_work.data = u.practice_work
-            form.laboratory_work.data = u.laboratory_work
+
 
     f=Form_two.query.filter(Form_two.NumForm == numForm).order_by(Form_two.timestamp.desc()).count()
     all_g_ok = [0] * int(koll)
@@ -676,6 +670,8 @@ def form2_edit(username, numForm, group, sub, i):
             return redirect(url_for('form0_edit', username = current_user.username, numForm = numForm))
         elif i == '1':
             return redirect(url_for('form12_promo', username = current_user.username, numForm = numForm, i = 1))
+        elif i == '44':
+            return redirect(url_for('all_form_view_g', username = current_user.username, numForm = numForm))
 
     elif request.method == 'GET':
         u = Form_two.query.filter(Form_two.NumForm == numForm, Form_two.Group_id == group, Form_two.id == sub).first()
@@ -775,155 +771,11 @@ def send_request(username, numForm):
         flash('Данная заявка не найдена')
     return redirect(url_for('index'))
 
-@app.route('/all_form_view/<username>/<i>', methods=['GET', 'POST'])
+
+
+@app.route('/all_form_view_g/<username>/<numForm>', methods=['GET', 'POST'])
 @login_required
-def all_form_view(username, i):
-    user = User.query.filter_by(username=username).first_or_404()
-    access = User.query.filter(User.username == username).first().access
-    if access == 'admin':
-        if i == '1':
-            koll = Form_all.query.count() #выяснеем количество заявок
-            if koll != 0:
-                forms = Form_all.query.all()
-                Z = []
-                for f in forms: #получаем список заявок
-                    Z.append(f.id)
-                all_forms = Form_all
-                all_users = User
-            else:
-                koll = 0
-                Z = 0
-                all_forms = 0
-                all_users = 0
-        elif i == '2':
-            koll = Form_all.query.count() #выяснеем количество заявок
-            if koll != 0:
-                forms = Form_all.query.all()
-                Z = []
-                n = 0
-                for f in forms: #получаем список различных годов в заявке
-                    if len(Z) == 0:
-                        Z.append(f.Year)
-                        n = n + 1
-                    elif Z[n-1] == f.Year:
-                        continue
-                    elif Z[n-1] != f.Yaer:
-                        Z.append(f.Year)
-                        n = n + 1
-
-                all_forms = Form_all
-                all_users = User
-                koll = len(Z)
-            else:
-                koll = 0
-                Z = 0
-                all_forms = 0
-                all_users = 0
-        elif i == '3':
-            koll = Form_all.query.count() #выяснеем количество заявок
-            if koll != 0:
-                forms = Form_all.query.all()
-                Z = []
-                n = 0
-                for f in forms: #получаем список различных годов в заявке
-                    if len(Z) == 0:
-                        Z.append(f.user_id)
-                        n = n + 1
-                    elif Z[n-1] == f.user_id:
-                        continue
-                    elif Z[n-1] != f.user_id:
-                        Z.append(f.user_id)
-                        n = n + 1
-
-                all_forms = Form_all
-                all_users = User
-                koll = len(Z)
-            else:
-                koll = 0
-                Z = 0
-                all_forms = 0
-                all_users = 0
-        elif i == '4':
-            koll = Form_all.query.count() #выяснеем количество заявок
-            if koll != 0:
-                forms = Form_all.query.all()
-                Z = []
-                n = 0
-                for f in forms: #получаем список различных годов в заявке
-                    if len(Z) == 0:
-                        Z.append(f.Department)
-                        n = n + 1
-                    elif Z[n-1] == f.Department:
-                        continue
-                    elif Z[n-1] != f.Department:
-                        Z.append(f.Department)
-                        n = n + 1
-
-                all_forms = Form_all
-                all_users = User
-                koll = len(Z)
-            else:
-                koll = 0
-                Z = 0
-                all_forms = 0
-                all_users = 0
-        elif i == '5':
-            koll = Form_all.query.count() #выяснеем количество заявок
-            if koll != 0:
-                forms = Form_all.query.all()
-                Z = []
-                n = 0
-                for f in forms: #получаем список различных годов в заявке
-                    if len(Z) == 0:
-                        Z.append(f.Faculty)
-                        n = n + 1
-                    elif Z[n-1] == f.Faculty:
-                        continue
-                    elif Z[n-1] != f.Faculty:
-                        Z.append(f.Faculty)
-                        n = n + 1
-
-                all_forms = Form_all
-                all_users = User
-                koll = len(Z)
-            else:
-                koll = 0
-                Z = 0
-                all_forms = 0
-                all_users = 0
-        elif i == '6':
-            koll = Form_all.query.count() #выяснеем количество заявок
-            if koll != 0:
-                forms = Form_all.query.all()
-                Z = []
-                n = 0
-                for f in forms: #получаем список различных годов в заявке
-                    if len(Z) == 0:
-                        Z.append(f.Status)
-                        n = n + 1
-                    elif Z[n-1] == f.Status:
-                        continue
-                    elif Z[n-1] != f.Status:
-                        Z.append(f.Status)
-                        n = n + 1
-
-                all_forms = Form_all
-                all_users = User
-                koll = len(Z)
-            else:
-                koll = 0
-                Z = 0
-                all_forms = 0
-                all_users = 0
-    else:
-        flash('У вас нет прав доступа к данной ссылки')
-        return redirect(url_for('index'))
-
-    return render_template('all_form_view.html', koll = koll, Z = Z, all_forms = all_forms, all_users = all_users, i = i)
-
-@app.route('/all_form_view_g/<username>/<i>/<numForm>', methods=['GET', 'POST'])
-@login_required
-def all_form_view_g(username, i, numForm):
+def all_form_view_g(username, numForm):
     user = User.query.filter_by(username=username).first_or_404()
 
 
@@ -959,7 +811,7 @@ def all_form_view_g(username, i, numForm):
         return (f1, f2, items, items1, items2, items3, b, m, c)
 
 
-    f0 = Form_all.query.filter(Form_all.user_id == user.id, Form_all.id == numForm).first()
+    f0 = Form_all.query.filter(Form_all.id == numForm).first()
     f1 = Form_one.query.filter(Form_one.NumForm == numForm).count()
     f1, f2, items, items1, items2, items3, b, m, c = check(f1)
     if f2 != 0:
@@ -988,8 +840,155 @@ def all_form_view_g(username, i, numForm):
         items_2 = 0
         g_no_ok = 0
     return render_template('all_form_view_g.html',
-                            numForm = numForm, g_no_ok = g_no_ok, k = k, i = i, user = user, G = G, koll = koll,
+                            numForm = numForm, g_no_ok = g_no_ok, k = k, user = user, G = G, koll = koll,
                             items = items, items_2 = items_2,
                             f0 = f0, f1 = f1, f2 = f2,
                             items1 = items1, items2 = items2, tems3 = items3,
                             b = b, m = m, c = c)
+
+@app.route('/all_form_view/<username>', methods=['GET', 'POST'])
+@login_required
+def all_form_view(username):
+    koll = Form_all.query.count() #выяснеем количество заявок
+    if koll != 0:
+        forms = Form_all.query.all()
+        Z1 = []
+        for f in forms: #получаем список заявок
+            Z1.append(f.id)
+        koll1 = Form_all.query.count()
+
+        n2 = 0
+        Z2 = []
+        for f in forms: #получаем список различных годов в заявке
+            if len(Z2) == 0:
+                Z2.append(f.Year)
+                n2 = n2 + 1
+            elif Z2[n2 - 1] == f.Year:
+                continue
+            elif Z2[n2 - 1] != f.Yaer:
+                Z2.append(f.Year)
+                n2 = n2 + 1
+        koll2 = len(Z2)
+
+        Z3 = []
+        n3 = 0
+        for f in forms: #получаем список различных годов в заявке
+            if len(Z3) == 0:
+                Z3.append(f.user_id)
+                n3 = n3 + 1
+            elif Z3[n3 - 1] == f.user_id:
+                continue
+            elif Z3[n3 - 1] != f.user_id:
+                Z3.append(f.user_id)
+                n3 = n3 + 1
+        koll3 = len(Z3)
+
+        Z4 = []
+        n4 = 0
+        for f in forms: #получаем список различных годов в заявке
+            if len(Z4) == 0:
+                Z4.append(f.Department)
+                n4 = n4 + 1
+            elif Z4[n4 - 1] == f.Department:
+                continue
+            elif Z4[n4 - 1] != f.Department:
+                Z4.append(f.Department)
+                n4 = n4 + 1
+        koll4 = len(Z4)
+
+        Z5 = []
+        n5 = 0
+        for f in forms: #получаем список различных годов в заявке
+            if len(Z5) == 0:
+                Z5.append(f.Faculty)
+                n5 = n5 + 1
+            elif Z5[n5 - 1] == f.Faculty:
+                continue
+            elif Z5[n5 - 1] != f.Faculty:
+                Z5.append(f.Faculty)
+                n5 = n5 + 1
+        koll5 = len(Z5)
+
+        Z6 = []
+        n6 = 0
+        for f in forms: #получаем список различных годов в заявке
+            if len(Z6) == 0:
+                Z6.append(f.Status)
+                n6 = n6 + 1
+            elif Z6[n6 - 1] == f.Status:
+                continue
+            elif Z6[n6 - 1] != f.Status:
+                Z6.append(f.Status)
+                n6 = n6 + 1
+        koll6 = len(Z6)
+
+        all_forms = Form_all
+        all_users = User
+    else:
+        koll1 = 0
+        Z1 = 0
+        koll2 = 0
+        Z2 = 0
+        koll3 = 0
+        Z3 = 0
+        koll4 = 0
+        Z4 = 0
+        koll5 = 0
+        Z5 = 0
+        koll6 = 0
+        Z6 = 0
+        all_forms = 0
+        all_users = 0
+
+    return render_template('all_form_view.html',
+                            koll1 = koll1, Z1 = Z1,
+                            koll2 = koll2, Z2 = Z2,
+                            koll3 = koll3, Z3 = Z3,
+                            koll4 = koll4, Z4 = Z4,
+                            koll5 = koll5, Z5 = Z5,
+                            koll6 = koll6, Z6 = Z6,
+                            all_forms = all_forms, all_users = all_users)
+
+@app.route('/all_form_user/<username>', methods=['GET', 'POST'])
+@login_required
+def all_form_user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    users = User.query.all()
+    group1=[]
+    group2=[]
+    group3=[]
+    group4=[]
+    group5=[]
+    for u in users:
+        name = u.FullName
+        if name[0] == 'А' or name[0] == 'Б' or name[0] == 'В' or name[0] == 'Г' or name[0] == 'Д' or name[0] == 'Е' or name[0] == 'Ё':
+            group1.append(u.id)
+        elif name[0] == 'Ж' or name[0] == 'З' or name[0] == 'И' or name[0] == 'Й' or name[0] == 'К' or name[0] == 'Л' or name[0] == 'М':
+            group2.append(u.id)
+        elif name[0] == 'Н' or name[0] == 'О' or name[0] == 'П' or name[0] == 'Р' or name[0] == 'С' or name[0] == 'Т' or name[0] == 'У':
+            group3.append(u.id)
+        elif name[0] == 'Ф' or name[0] == 'Х' or name[0] == 'Ц' or name[0] == 'Ч' or name[0] == 'Ш' or name[0] == 'Щ':
+            group4.append(u.id)
+        elif name[0] == 'Ы' or name[0] == 'Ъ' or name[0] == 'Ь' or name[0] == 'Э' or name[0] == 'Ю' or name[0] == 'Я':
+            group5.append(u.id)
+    All_User = User
+    res = 0
+    form = User_Search()
+    if form.validate_on_submit():
+        if form.TypeSearch.data == 1:
+            res = User.query.filter(User.FullName.like('%'+form.WhoSearch.data+'%'))
+        elif form.TypeSearch.data == 2:
+            res = User.query.filter(User.Department.like('%'+form.WhoSearch.data+'%'))
+        elif form.TypeSearch.data == 3:
+            res = User.query.filter(User.username.like('%'+form.WhoSearch.data+'%'))
+
+
+
+
+
+
+    return render_template('all_form_user.html', form = form, All_User = All_User,
+                            group1 = group1, group2 = group2, res = res,
+                            group3 = group3, group4 = group4, group5 = group5,
+                            koll1 = len(group1), koll2 = len(group2), koll3 = len(group3),
+                            koll4 = len(group4), koll5 = len(group5))

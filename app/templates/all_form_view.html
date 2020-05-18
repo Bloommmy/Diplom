@@ -1,69 +1,91 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-{% if i == '1' %}
+<div class="row">
+  <div class="col text-center">
+    <h1>База заявок</h1>
+    <p>С&nbsp;помощью фильтров ищите нужную первичную информацию о&nbsp;группа и&nbsp;дисциплинах.</p>
 
-<nav class="nav nav-pills nav-justified">
-  <a class="nav-item nav-link active btn btn-secondary" href="{{ url_for('all_form_view', username=current_user.username, i=1) }}">Номер</a>
-  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=2) }}">Год</a>
-  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=3) }}">Автор</a>
-  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=4) }}">Кафедра</a>
-  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=5) }}">Факультет</a>
-  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=6) }}">Статус</a>
-</nav>
+  </div>
 
+</div>
+<hr>
+<div class="row">
+  <div class="col">
+    <h5>Фильтры</h5>
 
+  </div>
 
+</div>
+<ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="pills-num-tab" data-toggle="pill" href="#pills-num" role="tab" aria-controls="pills-num" aria-selected="true" data-placement="top" title="Сортирует заявки по номеру">Номер</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="pills-year-tab" data-toggle="pill" href="#pills-year" role="tab" aria-controls="pills-year" aria-selected="false" data-placement="top" title="Сортирует заявки по году">Год</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="pills-user-tab" data-toggle="pill" href="#pills-user" role="tab" aria-controls="pills-user" aria-selected="false" data-placement="top" title="Сортирует заявки по авторам">Автор</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="pills-fac-tab" data-toggle="pill" href="#pills-fac" role="tab" aria-controls="pills-fac" aria-selected="false" data-placement="top" title="Сортирует заявки по факультетам и кафедрам">Факультет</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="pills-status-tab" data-toggle="pill" href="#pills-status" role="tab" aria-controls="pills-status" aria-selected="false" data-placement="top" title="Сортирует заявки по готовности">Статус</a>
+  </li>
 
-    <br>
+</ul>
+<hr>
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show active" id="pills-num" role="tabpanel" aria-labelledby="pills-num-tab">
+
     <div class="card-columns">
-      {% for k in range(koll) %}
+      {% for k in range(koll1) %}
 
         <div class="card">
           <div class="card-header">
-            Заявка №{{ Z[k] }}
+            Заявка №{{ Z1[k] }}
           </div>
           <div class="card-body">
             <p class="card-text">
-              Факультет: <b>{{ all_forms.query.filter(all_forms.id == Z[k]).first().Faculty }}</b><br>
-              Кафедра: <b>{{ all_forms.query.filter(all_forms.id == Z[k]).first().Department }}</b><br>
-              Год: <b>{{ all_forms.query.filter(all_forms.id == Z[k]).first().Year }}</b><br>
-              Автор: <b>{{all_users.query.filter(all_users.id == (all_forms.query.filter(all_forms.id == Z[k]).first().user_id)).first().FullName }}</b><br>
+              Факультет: <b>{{ all_forms.query.filter(all_forms.id == Z1[k]).first().Faculty }}</b><br>
+              Кафедра: <b>{{ all_forms.query.filter(all_forms.id == Z1[k]).first().Department }}</b><br>
+              Год: <b>{{ all_forms.query.filter(all_forms.id == Z1[k]).first().Year }}</b><br>
+              Автор: <b>{{all_users.query.filter(all_users.id == (all_forms.query.filter(all_forms.id == Z1[k]).first().user_id)).first().FullName }}</b><br>
               Статус:
               <b>
-                {% if all_forms.query.filter(all_forms.id == Z[k]).first().Status == None %}
+                {% if all_forms.query.filter(all_forms.id == Z1[k]).first().Status == None %}
                 В процессe
-                {% elif all_forms.query.filter(all_forms.id == Z[k]).first().Status == 'ok' %}
+                {% elif all_forms.query.filter(all_forms.id == Z1[k]).first().Status == 'ok' %}
                 Завершена
                 {% endif %}
               </b>
 
 
             </p>
-            <a href="{{ url_for('all_form_view_g', username=current_user.username, i=1, numForm=Z[k]) }}" class="card-link">Просмотр</a>
-            <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=Z[k], g=0, sub=0) }}" class="card-link">Удалить</a>
+            <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=Z1[k]) }}" class="card-link">Просмотр</a>
+            <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=Z1[k], g=0, sub=0) }}" class="card-link">Удалить</a>
           </div>
         </div>
-
-
-
       {% endfor %}
     </div>
-{% elif i == '2' %}
-    <nav class="nav nav-pills nav-justified">
-      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=1) }}">Номер</a>
-      <a class="nav-item nav-link active btn btn-secondary" href="{{ url_for('all_form_view', username=current_user.username, i=2) }}">Год</a>
-      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=3) }}">Автор</a>
-      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=4) }}">Кафедра</a>
-      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=5) }}">Факультет</a>
-      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=6) }}">Статус</a>
-    </nav>
-    <br>
-    {% for k in range(koll) %}
-        <h5>{{ Z[k] }}</h5>
-        <br>
+  </div>
+  <div class="tab-pane fade" id="pills-year" role="tabpanel" aria-labelledby="pills-year-tab">
+
+    {% for k in range(koll2) %}
+
+    <div class="row">
+      <div class="col">
+
+      <h5>{{ Z2[k] }}</h5>
+
+      </div>
+
+    </div>
+<br>
+
         <div class="card-columns">
-        {% for g in all_forms.query.filter(all_forms.Year == Z[k]).all() %}
+        {% for g in all_forms.query.filter(all_forms.Year == Z2[k]).all() %}
             <div class="card">
               <div class="card-header">
                 Заявка №{{ g.id }}
@@ -83,29 +105,32 @@
                     {% endif %}
                   </b>
                 </p>
-                <a href="{{ url_for('all_form_view_g', username=current_user.username, i=2, numForm=g.id) }}" class="card-link">Просмотр</a>
-                <a href="{{ url_for('form_delet', username=current_user.username, i=4, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
               </div>
             </div>
 
         {% endfor %}
         </div>
-    {% endfor %}
-{% elif i == '3' %}
-    <nav class="nav nav-pills nav-justified">
-      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=1) }}">Номер</a>
-      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=2) }}">Год</a>
-      <a class="nav-item nav-link active btn btn-secondary" href="{{ url_for('all_form_view', username=current_user.username, i=3) }}">Автор</a>
-      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=4) }}">Кафедра</a>
-      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=5) }}">Факультет</a>
-      <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=6) }}">Статус</a>
-    </nav>
-    <br>
-    {% for k in range(koll) %}
-        <h5>{{ all_users.query.filter(all_users.id == Z[k]).first().FullName }}</h5>
         <br>
+    {% endfor %}
+
+  </div>
+  <div class="tab-pane fade" id="pills-user" role="tabpanel" aria-labelledby="pills-user-tab">
+
+    {% for k in range(koll3) %}
+    <div class="row">
+      <div class="col">
+
+      <h5>{{ all_users.query.filter(all_users.id == Z3[k]).first().FullName }}</h5>
+
+      </div>
+
+    </div>
+<br>
+
         <div class="card-columns">
-        {% for g in all_forms.query.filter(all_forms.user_id == Z[k]).all() %}
+        {% for g in all_forms.query.filter(all_forms.user_id == Z3[k]).all() %}
             <div class="card">
               <div class="card-header">
                 Заявка №{{ g.id }}
@@ -125,148 +150,2219 @@
                     {% endif %}
                   </b>
                 </p>
-                <a href="{{ url_for('all_form_view_g', username=current_user.username, i=3, numForm=g.id) }}" class="card-link">Просмотр</a>
-                <a href="{{ url_for('form_delet', username=current_user.username, i=5, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
               </div>
             </div>
 
         {% endfor %}
         </div>
-    {% endfor %}
-    {% elif i == '4' %}
-        <nav class="nav nav-pills nav-justified">
-          <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=1) }}">Номер</a>
-          <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=2) }}">Год</a>
-          <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=3) }}">Автор</a>
-          <a class="nav-item nav-link active btn btn-secondary" href="{{ url_for('all_form_view', username=current_user.username, i=4) }}">Кафедра</a>
-          <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=5) }}">Факультет</a>
-          <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=6) }}">Статус</a>
-        </nav>
         <br>
-        {% for k in range(koll) %}
-            <h5>Кафедра {{ Z[k] }}</h5>
-            <br>
-            <div class="card-columns">
-            {% for g in all_forms.query.filter(all_forms.Department == Z[k]).all() %}
-                <div class="card">
-                  <div class="card-header">
-                    Заявка №{{ g.id }}
-                  </div>
-                  <div class="card-body">
-                    <p class="card-text">
-                      Факультет: <b>{{ g.Faculty }}</b><br>
-                      Кафедра: <b>{{ g.Department }}</b><br>
-                      Год: <b>{{ g.Year }}</b><br>
-                      Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
-                      Статус:
-                      <b>
-                        {% if g.Status == None %}
-                        В процессe
-                        {% elif g.Status == 'ok' %}
-                        Завершена
-                        {% endif %}
-                      </b>
-                    </p>
-                    <a href="{{ url_for('all_form_view_g', username=current_user.username, i=4, numForm=g.id) }}" class="card-link">Просмотр</a>
-                    <a href="{{ url_for('form_delet', username=current_user.username, i=6, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
-                  </div>
-                </div>
+        {% endfor %}
 
-            {% endfor %}
+  </div>
+
+  <div class="tab-pane fade" id="pills-fac" role="tabpanel" aria-labelledby="pills-fac-tab">
+
+
+<div class="row">
+  <div class="col">
+    <h5>СПбГЭТУ "ЛЭТИ"</h5>
+
+  </div>
+
+</div>
+
+    <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link" id="pills-frt-tab" data-toggle="pill" href="#pills-frt" role="tab" aria-controls="pills-frt" aria-selected="false">
+        ФРТ
+        {% if all_forms.query.filter(all_forms.Faculty == 'РТ').count() != 0 %}
+        <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Faculty == 'РТ').count()  }}</span>
+        {% endif %}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-fel-tab" data-toggle="pill" href="#pills-fel" role="tab" aria-controls="pills-fel" aria-selected="false">
+        ФЭЛ
+        {% if all_forms.query.filter(all_forms.Faculty == 'ЭЛ').count() != 0 %}
+        <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Faculty == 'ЕЛ').count()  }}</span>
+        {% endif %}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" id="pills-fkti-tab" data-toggle="pill" href="#pills-fkti" role="tab" aria-controls="pills-fkti" aria-selected="true">
+        ФКТИ
+        {% if all_forms.query.filter(all_forms.Faculty == 'КТИ').count() != 0 %}
+        <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Faculty == 'КТИ').count()  }}</span>
+        {% endif %}
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" id="pills-fea-tab" data-toggle="pill" href="#pills-fea" role="tab" aria-controls="pills-fea" aria-selected="false">
+        ФЭА
+        {% if all_forms.query.filter(all_forms.Faculty == 'ЭА').count() != 0 %}
+        <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Faculty == 'ЭА').count()  }}</span>
+        {% endif %}
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" id="pills-fibs-tab" data-toggle="pill" href="#pills-fibs" role="tab" aria-controls="pills-fibs" aria-selected="false">
+        ФИБС
+        {% if all_forms.query.filter(all_forms.Faculty == 'ИБС').count() != 0 %}
+        <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Faculty == 'ИБС').count()  }}</span>
+        {% endif %}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-inprotex-tab" data-toggle="pill" href="#pills-inprotex" role="tab" aria-controls="pills-inprotex" aria-selected="false">
+        ИНПРОТЕХ
+        {% if all_forms.query.filter(all_forms.Faculty == 'НПРОТЕХ').count() != 0 %}
+        <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Faculty == 'НПРОТЕХ').count()  }}</span>
+        {% endif %}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-gf-tab" data-toggle="pill" href="#pills-gf" role="tab" aria-controls="pills-gf" aria-selected="false">
+        ГФ
+        {% if all_forms.query.filter(all_forms.Faculty == 'Г').count() != 0 %}
+        <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Faculty == 'Г').count()  }}</span>
+        {% endif %}
+      </a>
+    </li>
+
+  </ul>
+  <hr>
+  <div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-fkti" role="tabpanel" aria-labelledby="pills-fkti-tab">
+<div class="row">
+  <div class="col">
+    <h5>Факультет компьютерных технологий и информатики</h5>
+  </div>
+</div>
+      <ul class="nav nav-pills  nav-justified" id="pills-tab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="pills-sapr-tab" data-toggle="pill" href="#pills-sapr" role="tab" aria-controls="pills-sapr" aria-selected="true">
+            САПР
+            {% if all_forms.query.filter(all_forms.Department == 'САПР').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'САПР').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-vt-tab" data-toggle="pill" href="#pills-vt" role="tab" aria-controls="pills-vt" aria-selected="false">
+            ВТ
+            {% if all_forms.query.filter(all_forms.Department == 'ВТ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ВТ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-apy-tab" data-toggle="pill" href="#pills-apy" role="tab" aria-controls="pills-apy" aria-selected="false">
+            АПУ
+            {% if all_forms.query.filter(all_forms.Department == 'АПУ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'АПУ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-ic-tab" data-toggle="pill" href="#pills-ic" role="tab" aria-controls="pills-ic" aria-selected="true">
+            ИС
+            {% if all_forms.query.filter(all_forms.Department == 'ИС').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ИС').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-moevm-tab" data-toggle="pill" href="#pills-moevm" role="tab" aria-controls="pills-moevm" aria-selected="false">
+            МО ЭВМ
+            {% if all_forms.query.filter(all_forms.Department == 'МО ЭВМ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'МО ЭВМ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-ib-tab" data-toggle="pill" href="#pills-ib" role="tab" aria-controls="pills-ib" aria-selected="false">
+            ИБ
+            {% if all_forms.query.filter(all_forms.Department == 'ИБ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ИБ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <br>
+      </ul>
+      <hr>
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-sapr" role="tabpanel" aria-labelledby="pills-sapr-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра систем автоматизированного проектирования</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'САПР').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'САПР').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="tab-pane fade" id="pills-vt" role="tabpanel" aria-labelledby="pills-vt-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра вычислительной техники</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ВТ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ВТ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="tab-pane fade" id="pills-apy" role="tabpanel" aria-labelledby="pills-apy-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра автоматизации процессов управления</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'АПУ').count() != 0 %}
+
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'АПУ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="tab-pane fade" id="pills-ic" role="tabpanel" aria-labelledby="pills-ic-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра информационных систем</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ИС').count() != 0 %}
+
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ИС').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="tab-pane fade" id="pills-moevm" role="tabpanel" aria-labelledby="pills-moevm-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра математического обеспечения и применения ЭВМ</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'МО ЭВМ').count() != 0 %}
+
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'МО ЭВМ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="tab-pane fade" id="pills-ib" role="tabpanel" aria-labelledby="pills-ib-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра информационной безопасности</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ИБ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ИБ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tab-pane fade" id="pills-frt" role="tabpanel" aria-labelledby="pills-frt-tab">
+
+      <div class="row">
+        <div class="col">
+          <h5>Факультет радиотехники и телекоммуникаций</h5>
+        </div>
+      </div>
+
+      <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="pills-rc-tab" data-toggle="pill" href="#pills-rc" role="tab" aria-controls="pills-rc" aria-selected="true">
+            РС
+            {% if all_forms.query.filter(all_forms.Department == 'РС').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'РС').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-tor-tab" data-toggle="pill" href="#pills-tor" role="tab" aria-controls="pills-tor" aria-selected="false">
+            ТОР
+            {% if all_forms.query.filter(all_forms.Department == 'ТОР').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ТОР').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-tv-tab" data-toggle="pill" href="#pills-tv" role="tab" aria-controls="pills-tv" aria-selected="false">
+            ТВ
+            {% if all_forms.query.filter(all_forms.Department == 'ТОР').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ТОР').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-pec-tab" data-toggle="pill" href="#pills-pec" role="tab" aria-controls="pills-pec" aria-selected="false">
+            РЭС
+            {% if all_forms.query.filter(all_forms.Department == 'РЭС').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'РЭС').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-mit-tab" data-toggle="pill" href="#pills-mit" role="tab" aria-controls="pills-mit" aria-selected="false">
+            МИТ
+            {% if all_forms.query.filter(all_forms.Department == 'МИТ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'МИТ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+      </ul>
+      <hr>
+
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-rc" role="tabpanel" aria-labelledby="pills-rc-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра радиотехнических систем</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'РС').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'РС').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+
+        <div class="tab-pane fade" id="pills-tor" role="tabpanel" aria-labelledby="pills-tor-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра теоретических основ радиотехники</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ТОР').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ТОР').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+
+        <div class="tab-pane fade" id="pills-tv" role="tabpanel" aria-labelledby="pills-tv-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра телевидения и видеотехники</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ТВ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ТВ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+
+        <div class="tab-pane fade" id="pills-pec" role="tabpanel" aria-labelledby="pills-pec-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра радиоэлектронных средств</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'РЭС').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'РЭС').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+
+        <div class="tab-pane fade" id="pills-mit" role="tabpanel" aria-labelledby="pills-mit-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра микрорадиоэлектроники и технологии радиоаппаратуры</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'МИТ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'МИТ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="pills-fea" role="tabpanel" aria-labelledby="pills-fea-tab">
+
+      <div class="row">
+        <div class="col">
+          <h5>Факультет электротехники и автоматики</h5>
+        </div>
+      </div>
+
+      <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="pills-cay-tab" data-toggle="pill" href="#pills-cay" role="tab" aria-controls="pills-cay" aria-selected="true">
+            САУ
+            {% if all_forms.query.filter(all_forms.Department == 'САУ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'САУ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-kcy-tab" data-toggle="pill" href="#pills-kcy" role="tab" aria-controls="pills-kcy" aria-selected="false">
+            КСУ
+            {% if all_forms.query.filter(all_forms.Department == 'КСУ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'КСУ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-etnt-tab" data-toggle="pill" href="#pills-etnt" role="tab" aria-controls="pills-etny" aria-selected="false">
+            ЭТПТ
+            {% if all_forms.query.filter(all_forms.Department == 'ЭТПТ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ЭТПТ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-ranc-tab" data-toggle="pill" href="#pills-ranc" role="tab" aria-controls="pills-ranc" aria-selected="false">
+            РАПС
+            {% if all_forms.query.filter(all_forms.Department == 'РАПС').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'РАПС').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+      </ul>
+<hr>
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-cay" role="tabpanel" aria-labelledby="pills-cay-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра систем автоматического управления</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'САУ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'САУ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-kcy" role="tabpanel" aria-labelledby="pills-kcy-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра корабельных систем управления</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'КСУ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'КСУ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-etnt" role="tabpanel" aria-labelledby="pills-etnt-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра электротехнологической и преобразовательной техники</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ЭТПТ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ЭТПТ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-ranc" role="tabpanel" aria-labelledby="pills-ranc-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра робототехники и автоматизации производственных систем</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'РАПС').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'РАПС').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+    </div>
+
+    <div class="tab-pane fade" id="pills-fel" role="tabpanel" aria-labelledby="pills-fel-tab">
+
+      <div class="row">
+        <div class="col">
+          <h5>Факультет электроники</h5>
+        </div>
+      </div>
+
+      <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="pills-rte-tab" data-toggle="pill" href="#pills-rte" role="tab" aria-controls="pills-rte" aria-selected="true">
+            РТЭ
+            {% if all_forms.query.filter(all_forms.Department == 'РТЭ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'РТЭ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-epy-tab" data-toggle="pill" href="#pills-epy" role="tab" aria-controls="pills-epy" aria-selected="false">
+            ЭПУ
+            {% if all_forms.query.filter(all_forms.Department == 'ЭПУ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ЭПУ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-ep-tab" data-toggle="pill" href="#pills-ep" role="tab" aria-controls="pills-ep" aria-selected="false">
+            ЭП
+            {% if all_forms.query.filter(all_forms.Department == 'ЭП').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ЭП').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-fet-tab" data-toggle="pill" href="#pills-fet" role="tab" aria-controls="pills-fet" aria-selected="false">
+            ФЭТ
+            {% if all_forms.query.filter(all_forms.Department == 'ФЭТ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ФЭТ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-mne-tab" data-toggle="pill" href="#pills-mne" role="tab" aria-controls="pills-mne" aria-selected="false">
+            МНЭ
+            {% if all_forms.query.filter(all_forms.Department == 'МНЭ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'МНЭ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-b_oe-tab" data-toggle="pill" href="#pills-b_oe" role="tab" aria-controls="pills-b_oe" aria-selected="false">
+            ОЭ
+            {% if all_forms.query.filter(all_forms.Department == 'ОЭ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ОЭ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-fot-tab" data-toggle="pill" href="#pills-fot" role="tab" aria-controls="pills-fot" aria-selected="false">
+            Фот
+            {% if all_forms.query.filter(all_forms.Department == 'Фот').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'Фот').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-ftte-tab" data-toggle="pill" href="#pills-ftte" role="tab" aria-controls="pills-ftte" aria-selected="false">
+            ФТТЭ
+            {% if all_forms.query.filter(all_forms.Department == 'ФТТЭ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ФТТЭ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+      </ul>
+<hr>
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-rte" role="tabpanel" aria-labelledby="pills-rte-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра радиотехнической электроники</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'РТЭ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'РТЭ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-epy" role="tabpanel" aria-labelledby="pills-epy-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра электронных приборов и устройств</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ЭПУ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ЭПУ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-ep" role="tabpanel" aria-labelledby="pills-ep-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра электронного приборостроения</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ЭП').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ЭП').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-fet" role="tabpanel" aria-labelledby="pills-fet-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра физической электроники и технологии</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ФЭТ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ФЭТ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-mne" role="tabpanel" aria-labelledby="pills-mne-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра микро- и наноэлектроники</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'МНЭ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'МНЭ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-b_oe" role="tabpanel" aria-labelledby="pills-b_oe-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра оптоэлектроники</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ОЭ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ОЭ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-fot" role="tabpanel" aria-labelledby="pills-fot-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра фотоники</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'Фот').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'Фот').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-ftte" role="tabpanel" aria-labelledby="pills-ftte-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра физики и технологии твердотельной электроники </h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ФТТЭ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ФТТЭ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="pills-fibs" role="tabpanel" aria-labelledby="pills-fibs-tab">
+
+      <div class="row">
+        <div class="col">
+          <h5>Факультет информационно-измерительных и биотехнических систем</h5>
+        </div>
+      </div>
+
+      <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="pills-yet-tab" data-toggle="pill" href="#pills-yet" role="tab" aria-controls="pills-yet" aria-selected="true">
+            ЭУТ
+            {% if all_forms.query.filter(all_forms.Department == 'ЭУТ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ЭУТ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-linc-tab" data-toggle="pill" href="#pills-linc" role="tab" aria-controls="pills-linc" aria-selected="false">
+            ЛИНС
+            {% if all_forms.query.filter(all_forms.Department == 'ЛИНС').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ЛИНС').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-iinc-tab" data-toggle="pill" href="#pills-iinc" role="tab" aria-controls="pills-iinc" aria-selected="false">
+            ИИСТ
+            {% if all_forms.query.filter(all_forms.Department == 'ИИСТ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ИИСТ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-izoc-tab" data-toggle="pill" href="#pills-izoc" role="tab" aria-controls="pills-izoc" aria-selected="false">
+            ИЗОС
+            {% if all_forms.query.filter(all_forms.Department == 'ИЗОС').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ИЗОС').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-btc-tab" data-toggle="pill" href="#pills-btc" role="tab" aria-controls="pills-btc" aria-selected="false">
+            БТС
+            {% if all_forms.query.filter(all_forms.Department == 'БТС').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'БТС').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-fx-tab" data-toggle="pill" href="#pills-fx" role="tab" aria-controls="pills-fx" aria-selected="false">
+            ФХ
+            {% if all_forms.query.filter(all_forms.Department == 'ФХ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ФХ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+      </ul>
+<hr>
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-yet" role="tabpanel" aria-labelledby="pills-yet-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра электроакустики и ультразвуковой техники</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ЭУТ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ЭУТ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-linc" role="tabpanel" aria-labelledby="pills-linc-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра лазерных измерительных и навигационных систем</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ЛИНС').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ЛИНС').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-iinc" role="tabpanel" aria-labelledby="pills-iinc-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра информационно-измерительных систем и технологий</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ИИСТ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ИИСТ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-izoc" role="tabpanel" aria-labelledby="pills-izoc-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра инженерной защиты окружающей среды</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ИЗОС').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ИЗОС').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-btc" role="tabpanel" aria-labelledby="pills-btc-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра биотехнических систем</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'БТС').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'БТС').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-fx" role="tabpanel" aria-labelledby="pills-fx-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра физической химии</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ФХ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ФХ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+      </div>
+      </div>
+
+    <div class="tab-pane fade" id="pills-gf" role="tabpanel" aria-labelledby="pills-gf-tab">
+
+      <div class="row">
+        <div class="col">
+          <h5>Гуманитарный факультет</h5>
+        </div>
+      </div>
+
+      <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="pills-co-tab" data-toggle="pill" href="#pills-co" role="tab" aria-controls="pills-co" aria-selected="true">
+            CO
+            {% if all_forms.query.filter(all_forms.Department == 'CO').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'CO').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-iu-tab" data-toggle="pill" href="#pills-iu" role="tab" aria-controls="pills-iu" aria-selected="false">
+            ИЯ
+            {% if all_forms.query.filter(all_forms.Department == 'ИЯ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ИЯ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+      </ul>
+<hr>
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-co" role="tabpanel" aria-labelledby="pills-co-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра связи с общественностью</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'CO').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'CO').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-iu" role="tabpanel" aria-labelledby="pills-iu-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра иностранных языков</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ИЯ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ИЯ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+    </div>
+
+    </div>
+
+    <div class="tab-pane fade" id="pills-inprotex" role="tabpanel" aria-labelledby="pills-inprotex-tab">
+
+      <div class="row">
+        <div class="col">
+          <h5>Институт инновационного проектирования и технологического предпринимательства</h5>
+        </div>
+      </div>
+      <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="pills-mck-tab" data-toggle="pill" href="#pills-mck" role="tab" aria-controls="pills-mck" aria-selected="true">
+            МСК
+            {% if all_forms.query.filter(all_forms.Department == 'МСК').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'МСК').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-im-tab" data-toggle="pill" href="#pills-im" role="tab" aria-controls="pills-im" aria-selected="false">
+            ИМ
+            {% if all_forms.query.filter(all_forms.Department == 'ИМ').count() != 0 %}
+            <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Department == 'ИМ').count()  }}</span>
+            {% endif %}
+          </a>
+        </li>
+      </ul>
+<hr>
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-mck" role="tabpanel" aria-labelledby="pills-mck-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра менеджмента и систем качества</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'МСК').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'МСК').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="tab-pane fade" id="pills-im" role="tabpanel" aria-labelledby="pills-im-tab">
+
+          <div class="row">
+            <div class="col">
+              <h5>Кафедра инновационного менеджмента</h5>
+
+            </div>
+
+          </div>
+          <br>
+          {% if all_forms.query.filter(all_forms.Department == 'ИМ').count() != 0 %}
+          <div class="card-columns">
+          {% for g in all_forms.query.filter(all_forms.Department == 'ИМ').all() %}
+              <div class="card">
+                <div class="card-header">
+                  Заявка №{{ g.id }}
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Факультет: <b>{{ g.Faculty }}</b><br>
+                    Кафедра: <b>{{ g.Department }}</b><br>
+                    Год: <b>{{ g.Year }}</b><br>
+                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                    Статус:
+                    <b>
+                      {% if g.Status == None %}
+                      В процессe
+                      {% elif g.Status == 'ok' %}
+                      Завершена
+                      {% endif %}
+                    </b>
+                  </p>
+                  <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                  <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+                </div>
+              </div>
+
+          {% endfor %}
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col text-center">
+              <h6>Пусто :(</h6>
+            </div>
+
+          </div>
+
+          {% endif %}
+        </div>
+    </div>
+  </div>
+  </div>
+  </div>
+
+
+
+  <div class="tab-pane fade" id="pills-status" role="tabpanel" aria-labelledby="pills-status-tab">
+<div class="row">
+  <div class="col">
+    <h5>Статусы заявок</h5>
+  </div>
+
+</div>
+
+    <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">
+          Завершённые
+          {% if all_forms.query.filter(all_forms.Status == 'ok' ).count() != 0 %}
+          <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Status == 'ok').count()  }}</span>
+          {% endif %}
+        </a>
+
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">
+          В процессе
+          {% if all_forms.query.filter(all_forms.Status == None ).count() != 0 %}
+          <span class="badge badge-light badge-pill">{{ all_forms.query.filter(all_forms.Status == None ).count()  }}</span>
+          {% endif %}
+        </a>
+      </li>
+      </ul>
+      <div class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+        <hr>
+        <div class="row">
+          <div class="col">
+
+          <h5>Завершенные заявки</h5>
+
+          </div>
+
+        </div>
+        <br>
+        <div class="card-columns">
+        {% if all_forms.query.filter(all_forms.Status == 'ok' ).count() != 0 %}
+        {% for g in all_forms.query.filter(all_forms.Status == 'ok').all() %}
+            <div class="card">
+              <div class="card-header">
+                Заявка №{{ g.id }}
+              </div>
+              <div class="card-body">
+                <p class="card-text">
+                  Факультет: <b>{{ g.Faculty }}</b><br>
+                  Кафедра: <b>{{ g.Department }}</b><br>
+                  Год: <b>{{ g.Year }}</b><br>
+                  Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                  Статус:
+                  <b>
+                    {% if g.Status == None %}
+                    В процессe
+                    {% elif g.Status == 'ok' %}
+                    Завершена
+                    {% endif %}
+                  </b>
+                </p>
+                <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+              </div>
             </div>
         {% endfor %}
-        {% elif i == '5' %}
-            <nav class="nav nav-pills nav-justified">
-              <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=1) }}">Номер</a>
-              <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=2) }}">Год</a>
-              <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=3) }}">Автор</a>
-              <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=4) }}">Кафедра</a>
-              <a class="nav-item nav-link active btn btn-secondary" href="{{ url_for('all_form_view', username=current_user.username, i=5) }}">Факультет</a>
-              <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=6) }}">Статус</a>
-            </nav>
-            <br>
-            {% for k in range(koll) %}
-                <h5>Факультет {{ Z[k] }}</h5>
-                <br>
-                <div class="card-columns">
-                {% for g in all_forms.query.filter(all_forms.Faculty == Z[k]).all() %}
-                    <div class="card">
-                      <div class="card-header">
-                        Заявка №{{ g.id }}
-                      </div>
-                      <div class="card-body">
-                        <p class="card-text">
-                          Факультет: <b>{{ g.Faculty }}</b><br>
-                          Кафедра: <b>{{ g.Department }}</b><br>
-                          Год: <b>{{ g.Year }}</b><br>
-                          Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
-                          Статус:
-                          <b>
-                            {% if g.Status == None %}
-                            В процессe
-                            {% elif g.Status == 'ok' %}
-                            Завершена
-                            {% endif %}
-                          </b>
-                        </p>
-                        <a href="{{ url_for('all_form_view_g', username=current_user.username, i=5, numForm=g.id) }}" class="card-link">Просмотр</a>
-                        <a href="{{ url_for('form_delet', username=current_user.username, i=7, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
-                      </div>
-                    </div>
+        {% else %}
+          <p>Пусто</p>
+        {% endif %}
 
-                {% endfor %}
-                </div>
-            {% endfor %}
-            {% elif i == '6' %}
-                <nav class="nav nav-pills nav-justified">
-                  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=1) }}">Номер</a>
-                  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=2) }}">Год</a>
-                  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=3) }}">Автор</a>
-                  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=4) }}">Кафедра</a>
-                  <a class="nav-item nav-link disabled" href="{{ url_for('all_form_view', username=current_user.username, i=5) }}">Факультет</a>
-                  <a class="nav-item nav-link active btn btn-secondary" href="{{ url_for('all_form_view', username=current_user.username, i=6) }}">Статус</a>
-                </nav>
-                <br>
-                {% for k in range(koll) %}
-                          <h5>
-                            {% if Z[k] == None %}
-                            В процессe
-                            {% elif Z[k] == 'ok' %}
-                            Завершенные
-                            {% endif %}
-                          </h5>
-                          <br>
-                          <div class="card-columns">
-                          {% for g in all_forms.query.filter(all_forms.Status == Z[k]).all() %}
-                              <div class="card">
-                                <div class="card-header">
-                                  Заявка №{{ g.id }}
-                                </div>
-                                <div class="card-body">
-                                  <p class="card-text">
-                                    Факультет: <b>{{ g.Faculty }}</b><br>
-                                    Кафедра: <b>{{ g.Department }}</b><br>
-                                    Год: <b>{{ g.Year }}</b><br>
-                                    Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
-                                    Статус:
-                                    <b>
-                                      {% if g.Status == None %}
-                                      В процессe
-                                      {% elif g.Status == 'ok' %}
-                                      Завершена
-                                      {% endif %}
-                                    </b>
-                                  </p>
-                                  <a href="{{ url_for('all_form_view_g', username=current_user.username, i=6, numForm=g.id) }}" class="card-link">Просмотр</a>
-                                  <a href="{{ url_for('form_delet', username=current_user.username, i=8, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
-                                </div>
-                              </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+        <hr>
+        <div class="row">
+          <div class="col">
 
-                          {% endfor %}
-                          </div>
-                          <br>
-                      {% endfor %}
-{% endif %}
+          <h5>Не завершенные заявки</h5>
 
+          </div>
+
+        </div>
+<br>
+        <div class="card-columns">
+        {% if all_forms.query.filter(all_forms.Status == None ).count() != 0 %}
+        {% for g in all_forms.query.filter(all_forms.Status == None).all() %}
+            <div class="card">
+              <div class="card-header">
+                Заявка №{{ g.id }}
+              </div>
+              <div class="card-body">
+                <p class="card-text">
+                  Факультет: <b>{{ g.Faculty }}</b><br>
+                  Кафедра: <b>{{ g.Department }}</b><br>
+                  Год: <b>{{ g.Year }}</b><br>
+                  Автор: <b>{{ all_users.query.filter(all_users.id == g.user_id).first().FullName }}</b><br>
+                  Статус:
+                  <b>
+                    {% if g.Status == None %}
+                    В процессe
+                    {% elif g.Status == 'ok' %}
+                    Завершена
+                    {% endif %}
+                  </b>
+                </p>
+                <a href="{{ url_for('all_form_view_g', username=current_user.username, numForm=g.id) }}" class="card-link">Просмотр</a>
+                <a href="{{ url_for('form_delet', username=current_user.username, i=3, numForm=g.id, g=0, sub=0) }}" class="card-link">Удалить</a>
+              </div>
+            </div>
+
+        {% endfor %}
+        {% else %}
+        Пусто
+        {% endif %}
+        </div>
+      </div>
+      </div>
+
+
+
+  </div>
+</div>
 
 {% endblock %}

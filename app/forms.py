@@ -96,3 +96,8 @@ class F_Two_edit(FlaskForm):
     laboratory_work = SelectField('Лабораторные',  choices=[('1', 'Да'),('2', 'Нет')])
 
     Save = SubmitField('Сохранить')
+
+class User_Search(FlaskForm):
+    WhoSearch = StringField('Название',validators=[DataRequired()])
+    TypeSearch = RadioField('Критерий поиска', choices=[(1, 'ФИО'),(2, 'Кафедра'),(3, 'Логин')], coerce=int, validators=[DataRequired()])
+    Search = SubmitField('Найти')
